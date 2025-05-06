@@ -1,25 +1,21 @@
 <template>
-
-<Tabs value="0">
-  <TabList>
-      <Tab value="0">Bots</Tab>
-  </TabList>
-  <TabPanels>
-
-      <TabPanel value="0">
-          
-      </TabPanel>
-
-  </TabPanels>
-</Tabs>
-
+  <div id="app">
+    <router-view />
+  </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
+<script>
+export default {
+  name: 'App'
+}
 </script>
 
 <style>
-
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

@@ -4,6 +4,7 @@ import App from './App.vue'
 import 'primeicons/primeicons.css'
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Splitter from "primevue/splitter";
 import SplitterPanel from 'primevue/splitterpanel';
@@ -21,6 +22,17 @@ import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
 import Badge from 'primevue/badge';
 
+const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import('./views/Login.vue')
+      }
+    ]
+})
+
 createApp(App)
 .component("Dialog", Dialog)
 .component("Button", Button)
@@ -37,9 +49,26 @@ createApp(App)
 .component("AccordionPanel", AccordionPanel)
 .component("AccordionHeader", AccordionHeader)
 .component("AccordionContent", AccordionContent)
+.use(router)
 .use(PrimeVue, {
     theme: {
         preset: Aura
+    },
+     
+    ripple: true, inputStyle: "outlined", 
+    locale: {
+        startsWith: "Comienza por",
+        contains: "Contiene",
+        notContains: "No contiene",
+        endsWith: "Termina en",
+        equals: "Igual a",
+        notEquals: "Diferente a",
+        noFilter: "Sin Filtro",
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
     }
 })
 .mount('#app')
