@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Timeline from './cards/Timeline.vue'
+import Timeline from "./cards/Timeline.vue";
 </script>
 
 <template>

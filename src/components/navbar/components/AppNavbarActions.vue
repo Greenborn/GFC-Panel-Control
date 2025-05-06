@@ -10,20 +10,22 @@
     >
     </VaButton>
     <!--<NotificationDropdown class="app-navbar-actions__item" />-->
-    <ProfileDropdown class="app-navbar-actions__item app-navbar-actions__item--profile mr-1" />
+    <ProfileDropdown
+      class="app-navbar-actions__item app-navbar-actions__item--profile mr-1"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import ProfileDropdown from './dropdowns/ProfileDropdown.vue'
-import NotificationDropdown from './dropdowns/NotificationDropdown.vue'
+import ProfileDropdown from "./dropdowns/ProfileDropdown.vue";
+import NotificationDropdown from "./dropdowns/NotificationDropdown.vue";
 
 defineProps({
   isMobile: { type: Boolean, default: false },
-})
+});
 
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <style lang="scss">

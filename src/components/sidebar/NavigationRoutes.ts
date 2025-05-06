@@ -1,35 +1,35 @@
 export interface INavigationRoute {
-  name: string
-  displayName: string
-  meta: { icon: string }
-  children?: INavigationRoute[]
+  name: string;
+  displayName: string;
+  meta: { icon: string };
+  children?: INavigationRoute[];
 }
 
 export default {
   root: {
-    name: '/',
-    displayName: 'navigationRoutes.home',
+    name: "/",
+    displayName: "navigationRoutes.home",
   },
   routes: [
     {
-      name: 'dashboard',
-      displayName: 'menu.dashboard',
+      name: "dashboard",
+      displayName: "menu.dashboard",
       meta: {
-        icon: 'vuestic-iconset-dashboard',
+        icon: "vuestic-iconset-dashboard",
       },
     },
     {
-      name: 'users',
-      displayName: 'menu.users',
+      name: "users",
+      displayName: "menu.users",
       meta: {
-        icon: 'group',
+        icon: "group",
       },
     },
     {
-      name: 'projects',
-      displayName: 'menu.projects',
+      name: "projects",
+      displayName: "menu.projects",
       meta: {
-        icon: 'folder_shared',
+        icon: "folder_shared",
       },
     },
     /*{
@@ -54,27 +54,27 @@ export default {
       ],
     },*/
     {
-      name: 'auth',
-      displayName: 'menu.auth',
+      name: "auth",
+      displayName: "menu.auth",
       meta: {
-        icon: 'login',
+        icon: "login",
       },
       children: [
         {
-          name: 'login',
-          displayName: 'menu.login',
+          name: "login",
+          displayName: "menu.login",
         },
         {
-          name: 'signup',
-          displayName: 'menu.signup',
+          name: "signup",
+          displayName: "menu.signup",
         },
         {
-          name: 'recover-password',
-          displayName: 'menu.recover-password',
+          name: "recover-password",
+          displayName: "menu.recover-password",
         },
       ],
     },
-/*
+    /*
     {
       name: 'faq',
       displayName: 'menu.faq',
@@ -90,18 +90,18 @@ export default {
       },
     },*/
     {
-      name: 'preferences',
-      displayName: 'menu.preferences',
+      name: "preferences",
+      displayName: "menu.preferences",
       meta: {
-        icon: 'manage_accounts',
+        icon: "manage_accounts",
       },
     },
     {
-      name: 'settings',
-      displayName: 'menu.settings',
+      name: "settings",
+      displayName: "menu.settings",
       meta: {
-        icon: 'settings',
+        icon: "settings",
       },
     },
   ] as INavigationRoute[],
-}
+};
