@@ -11,13 +11,28 @@
 
 <script setup>
 import { ref } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const username = ref('')
 const password = ref('')
 
 function login() {
-    // Aquí irá la lógica para autenticar al usuario
-    console.log('Login intentado con username:', username.value, 'y password:', password.value)
+    axios.post('http://localhost:7778/api/login', {
+    username: username.value,
+    password: password.value
+  })
+  .then(response => {
+    if (response.data.r === true) {
+      router.push({ name: 'dashboard' })
+    } else {
+      console.log('Error de autenticación')
+    }
+  })
+  .catch(error => {
+    console.log(error)
+  })
 }
 </script>
 

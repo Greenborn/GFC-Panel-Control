@@ -25,50 +25,77 @@ import Badge from 'primevue/badge';
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
-      {
-        path: '/login',
-        name: 'login',
-        component: () => import('./views/Login.vue')
-      }
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('./views/Login.vue')
+        },
+        {
+            path: '/dashboard',
+            name: 'dashboard',
+            component: () => import('./views/Dashboard.vue'),
+            meta: { requiresAuth: true }
+        }
     ]
 })
 
-createApp(App)
-.component("Dialog", Dialog)
-.component("Button", Button)
-.component("Splitter", Splitter)
-.component("SplitterPanel", SplitterPanel)
-.component("Tabs", Tabs)
-.component("TabList", TabList)
-.component("Tab", Tab)
-.component("Badge", Badge)
-.component("TabPanels", TabPanels)
-.component("TabPanel", TabPanel)
-.component("InputText", InputText)
-.component("Accordion", Accordion)
-.component("AccordionPanel", AccordionPanel)
-.component("AccordionHeader", AccordionHeader)
-.component("AccordionContent", AccordionContent)
-.use(router)
-.use(PrimeVue, {
-    theme: {
-        preset: Aura
-    },
-     
-    ripple: true, inputStyle: "outlined", 
-    locale: {
-        startsWith: "Comienza por",
-        contains: "Contiene",
-        notContains: "No contiene",
-        endsWith: "Termina en",
-        equals: "Igual a",
-        notEquals: "Diferente a",
-        noFilter: "Sin Filtro",
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+function isLoggedIn() {
+    return true
+    // Verifica si hay un token de autenticación en la cookie
+    const token = getCookie('token');
+    return token !== null;
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !isLoggedIn()) {
+        next({ name: 'login' })
+    } else {
+        next()
     }
 })
-.mount('#app')
+
+createApp(App)
+    .component("Dialog", Dialog)
+    .component("Button", Button)
+    .component("Splitter", Splitter)
+    .component("SplitterPanel", SplitterPanel)
+    .component("Tabs", Tabs)
+    .component("TabList", TabList)
+    .component("Tab", Tab)
+    .component("Badge", Badge)
+    .component("TabPanels", TabPanels)
+    .component("TabPanel", TabPanel)
+    .component("InputText", InputText)
+    .component("Accordion", Accordion)
+    .component("AccordionPanel", AccordionPanel)
+    .component("AccordionHeader", AccordionHeader)
+    .component("AccordionContent", AccordionContent)
+    .use(router)
+    .use(PrimeVue, {
+        theme: {
+            preset: Aura
+        },
+
+        ripple: true, inputStyle: "outlined",
+        locale: {
+            startsWith: "Comienza por",
+            contains: "Contiene",
+            notContains: "No contiene",
+            endsWith: "Termina en",
+            equals: "Igual a",
+            notEquals: "Diferente a",
+            noFilter: "Sin Filtro",
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        }
+    })
+    .mount('#app')
