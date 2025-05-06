@@ -32,7 +32,7 @@ export default {
         icon: 'folder_shared',
       },
     },
-    {
+    /*{
       name: 'payments',
       displayName: 'menu.payments',
       meta: {
@@ -52,7 +52,7 @@ export default {
           displayName: 'menu.billing',
         },
       ],
-    },
+    },*/
     {
       name: 'auth',
       displayName: 'menu.auth',
@@ -74,7 +74,7 @@ export default {
         },
       ],
     },
-
+/*
     {
       name: 'faq',
       displayName: 'menu.faq',
@@ -88,7 +88,7 @@ export default {
       meta: {
         icon: 'vuestic-iconset-files',
       },
-    },
+    },*/
     {
       name: 'preferences',
       displayName: 'menu.preferences',

@@ -9,7 +9,7 @@
       class="app-navbar-actions__item flex-shrink-0 mx-0"
     >
     </VaButton>
-    <NotificationDropdown class="app-navbar-actions__item" />
+    <!--<NotificationDropdown class="app-navbar-actions__item" />-->
     <ProfileDropdown class="app-navbar-actions__item app-navbar-actions__item--profile mr-1" />
   </div>
 </template>
