@@ -1,11 +1,11 @@
 import { Ref, ref, unref, watch, computed } from "vue";
-import { v4 as uuid } from "uuid";
+import { v7 as uuid } from "uuid";
 import type { Filters, Pagination, Sorting } from "../../../data/pages/users";
 import { User } from "../types";
 import { useUsersStore } from "../../../stores/users";
 
 const makePaginationRef = () =>
-  ref<Pagination>({ page: 1, perPage: 10, total: 0 });
+  ref<Pagination>({ page: 1, perPage: 30, total: 0 });
 const makeSortingRef = () =>
   ref<Sorting>({ sortBy: "fullname", sortingOrder: null });
 const makeFiltersRef = () =>
@@ -29,12 +29,14 @@ export const useUsers = (options?: {
   const fetch = async () => {
     isLoading.value = true;
     try {
-      await usersStore.getAll({
+      await usersStore?.getAll({
         filters: unref(filters),
         sorting: unref(sorting),
         pagination: unref(pagination),
       });
       pagination.value = usersStore.pagination;
+    } catch (e) {
+      console.log(e)
     } finally {
       isLoading.value = false;
     }
@@ -61,7 +63,10 @@ export const useUsers = (options?: {
       return obj[sortBy];
     };
 
-    const paginated = usersStore.items.slice(
+    if (!usersStore?.items?.slice) {
+      return [];
+    }
+    const paginated = usersStore?.items?.slice(
       (pagination.value.page - 1) * pagination.value.perPage,
       pagination.value.page * pagination.value.perPage,
     );

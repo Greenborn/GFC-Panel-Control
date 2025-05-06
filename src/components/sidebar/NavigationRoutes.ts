@@ -20,7 +20,7 @@ export default {
     },
     {
       name: "users",
-      displayName: "menu.users",
+      displayName: "Usuarios",
       meta: {
         icon: "group",
       },

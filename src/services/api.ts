@@ -1,13 +1,42 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+import axios from 'axios';
+
+const apiBaseUrl = 'http://localhost:7778/api'; 
+
+const api = axios.create({
+  baseURL: apiBaseUrl,
+});
 
 export default {
-  allUsers: () => `${apiBaseUrl}/users`,
-  user: (id: string) => `${apiBaseUrl}/users/${id}`,
-  users: ({ page, pageSize }: { page: number; pageSize: number }) =>
-    `${apiBaseUrl}/users/?page=${page}&pageSize=${pageSize}`,
-  allProjects: () => `${apiBaseUrl}/projects`,
-  project: (id: string) => `${apiBaseUrl}/projects/${id}`,
-  projects: ({ page, pageSize }: { page: number; pageSize: number }) =>
-    `${apiBaseUrl}/projects/?page=${page}&pageSize=${pageSize}`,
-  avatars: () => `${apiBaseUrl}/avatars`,
+  allUsers: async () => {
+    const response = await api.get("/users");
+    return response.data;
+  },
+  user: async (id: string) => {
+    const response = await api.get(`/users/${id}`);
+    return response.data;
+  },
+  users: async ({ page, pageSize }: { page: number; pageSize: number }) => {
+    const response = await api.get('/users', {
+      params: { page, pageSize },
+    });
+    return response.data;
+  },
+  allProjects: async () => {
+    const response = await api.get('/projects');
+    return response.data;
+  },
+  project: async (id: string) => {
+    const response = await api.get(`/projects/${id}`);
+    return response.data;
+  },
+  projects: async ({ page, pageSize }: { page: number; pageSize: number }) => {
+    const response = await api.get('/projects', {
+      params: { page, pageSize },
+    });
+    return response.data;
+  },
+  avatars: async () => {
+    const response = await api.get('/avatars');
+    return response.data;
+  },
 };

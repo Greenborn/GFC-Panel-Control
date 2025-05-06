@@ -5,13 +5,13 @@ import EditUserForm from "./widgets/EditUserForm.vue";
 import { User } from "./types";
 import { useUsers } from "./composables/useUsers";
 import { useModal, useToast } from "vuestic-ui";
-import { useProjects } from "../projects/composables/useProjects";
+//import { useProjects } from "../projects/composables/useProjects";
 
 const doShowEditUserModal = ref(false);
 
 const { users, isLoading, filters, sorting, pagination, error, ...usersApi } =
   useUsers();
-const { projects } = useProjects();
+//const { projects } = useProjects();
 
 const userToEdit = ref<User | null>(null);
 
@@ -92,35 +92,28 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
 </script>
 
 <template>
-  <h1 class="page-title">Users</h1>
+  <h1 class="page-title">Usuarios</h1>
 
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
         <div class="flex flex-col md:flex-row gap-2 justify-start">
-          <VaButtonToggle
-            v-model="filters.isActive"
-            color="background-element"
-            border-color="background-element"
-            :options="[
-              { label: 'Active', value: true },
-              { label: 'Inactive', value: false },
-            ]"
-          />
+
           <VaInput v-model="filters.search" placeholder="Search">
             <template #prependInner>
               <VaIcon name="search" color="secondary" size="small" />
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">Add User</VaButton>
+        <VaButton @click="showAddUserModal">Agregar</VaButton>
+
       </div>
 
       <UsersTable
         v-model:sort-by="sorting.sortBy"
         v-model:sorting-order="sorting.sortingOrder"
         :users="users"
-        :projects="projects"
+        
         :loading="isLoading"
         :pagination="pagination"
         @editUser="showEditUserModal"

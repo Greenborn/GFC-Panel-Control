@@ -21,15 +21,15 @@ export const getUsers = async (
   filters: Partial<Filters & Pagination & Sorting>,
 ) => {
   const { isActive, search } = filters;
-  let filteredUsers: User[] = await fetch(api.allUsers()).then((r) => r.json());
+  let filteredUsers: User[] = await api.allUsers();
 
-  filteredUsers = filteredUsers.filter((user) => user.active === isActive);
+  /*filteredUsers = filteredUsers.filter((user) => user.active === isActive);
 
   if (search) {
     filteredUsers = filteredUsers.filter((user) =>
       user.fullname.toLowerCase().includes(search.toLowerCase()),
     );
-  }
+  }*/
 
   const { page = 1, perPage = 10 } = filters || {};
   return {
