@@ -5,7 +5,7 @@ import UserAvatar from "./UserAvatar.vue";
 import { PropType, computed, toRef } from "vue";
 import { Pagination, Sorting } from "../../../data/pages/users";
 import { useVModel } from "@vueuse/core";
-import { Project } from "../../projects/types";
+import { Project } from "../../contests/types";
 
 const columns = defineVaDataTableColumns([
   { label: "Full Name", key: "fullname", sortable: true },

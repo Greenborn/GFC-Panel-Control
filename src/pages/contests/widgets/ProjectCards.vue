@@ -19,7 +19,7 @@ defineEmits<{
   (event: "delete", project: Project): void;
 }>();
 
-const { getUserById, getTeamOptions } = inject<any>("ProjectsPage");
+const { getUserById, getTeamOptions } = inject<any>("ContestsPage");
 </script>
 
 <template>

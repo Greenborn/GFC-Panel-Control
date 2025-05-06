@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { defineVaDataTableColumns } from "vuestic-ui";
 import UserAvatar from "../../../users/widgets/UserAvatar.vue";
-import ProjectStatusBadge from "../../../projects/components/ProjectStatusBadge.vue";
-import { useProjects } from "../../../projects/composables/useProjects";
+import ProjectStatusBadge from "../../../contests/components/ProjectStatusBadge.vue";
+import { useProjects } from "../../../contests/composables/useProjects";
 import { Pagination } from "../../../../data/pages/projects";
 import { ref } from "vue";
-import { useProjectUsers } from "../../../projects/composables/useProjectUsers";
+import { useProjectUsers } from "../../../contests/composables/useProjectUsers";
 
 const columns = defineVaDataTableColumns([
   { label: "Name", key: "project_name", sortable: true },

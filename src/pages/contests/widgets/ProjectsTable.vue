@@ -50,7 +50,7 @@ const sortingOrderVModel = useVModel(props, "sortingOrder", emit);
 const totalPages = computed(() =>
   Math.ceil(props.pagination.total / props.pagination.perPage),
 );
-const { getUserById, getTeamOptions } = inject<any>("ProjectsPage");
+const { getUserById, getTeamOptions } = inject<any>("ContestsPage");
 </script>
 
 <template>

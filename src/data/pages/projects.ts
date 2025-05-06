@@ -1,5 +1,5 @@
 import api from "../../services/api";
-import { Project } from "../../pages/projects/types";
+import { Project } from "../../pages/contests/types";
 
 export type Pagination = {
   page: number;

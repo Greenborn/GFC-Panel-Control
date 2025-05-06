@@ -7,7 +7,7 @@ import {
   Sorting,
   updateProject,
 } from "../data/pages/projects";
-import { Project } from "../pages/projects/types";
+import { Project } from "../pages/contests/types";
 
 export const useProjectsStore = defineStore("projects", {
   state: () => {

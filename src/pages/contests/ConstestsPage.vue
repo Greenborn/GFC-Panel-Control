@@ -16,7 +16,7 @@ const { projects, update, add, isLoading, remove, pagination, sorting } =
 
 const { users, getTeamOptions, getUserById } = useProjectUsers();
 
-provide("ProjectsPage", {
+provide("ContestsPage", {
   users,
   getTeamOptions,
   getUserById,
@@ -95,7 +95,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
 </script>
 
 <template>
-  <h1 class="page-title">Projects</h1>
+  <h1 class="page-title">Concursos</h1>
 
   <VaCard>
     <VaCardContent>
@@ -111,7 +111,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
             ]"
           />
         </div>
-        <VaButton icon="add" @click="createNewProject">Project</VaButton>
+        <VaButton icon="add" @click="createNewProject">Concurso</VaButton>
       </div>
 
       <ProjectCards

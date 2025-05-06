@@ -3,7 +3,7 @@ import { PropType, computed, ref, watch } from "vue";
 import { useForm } from "vuestic-ui";
 import { User, UserRole } from "../types";
 import UserAvatar from "./UserAvatar.vue";
-import { useProjects } from "../../projects/composables/useProjects";
+import { useProjects } from "../../contests/composables/useProjects";
 import { validators } from "../../../services/utils";
 
 const props = defineProps({

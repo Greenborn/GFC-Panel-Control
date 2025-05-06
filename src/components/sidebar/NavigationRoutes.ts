@@ -27,7 +27,7 @@ export default {
     },
     {
       name: "projects",
-      displayName: "menu.projects",
+      displayName: "Concursos",
       meta: {
         icon: "folder_shared",
       },
