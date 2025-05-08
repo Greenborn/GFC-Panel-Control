@@ -1,17 +1,17 @@
 <template>
   <VaForm ref="form" @submit.prevent="submit">
-    <h1 class="font-semibold text-4xl mb-4">Log in</h1>
+    <h1 class="font-semibold text-4xl mb-4">Ingresar</h1>
     <p class="text-base mb-4 leading-5">
-      New to Vuestic?
+      ¿No tienes una cuenta?
       <RouterLink :to="{ name: 'signup' }" class="font-semibold text-primary"
-        >Sign up</RouterLink
+        >Registrate</RouterLink
       >
     </p>
     <VaInput
       v-model="formData.email"
       :rules="[validators.required]"
       class="mb-4"
-      label="Email"
+      label="Usuario"
       type="email"
     />
     <VaValue v-slot="isPasswordVisible" :default-value="false">
@@ -20,7 +20,7 @@
         :rules="[validators.required]"
         :type="isPasswordVisible.value ? 'text' : 'password'"
         class="mb-4"
-        label="Password"
+        label="Contraseña"
         @clickAppendInner.stop="
           isPasswordVisible.value = !isPasswordVisible.value
         "
@@ -43,18 +43,18 @@
       <VaCheckbox
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
-        label="Keep me signed in on this device"
+        label="Mantener sesión abierta"
       />
       <RouterLink
         :to="{ name: 'recover-password' }"
         class="mt-2 sm:mt-0 sm:ml-1 font-semibold text-primary"
       >
-        Forgot password?
+        Recordar Contraseña
       </RouterLink>
     </div>
 
     <div class="flex justify-center mt-4">
-      <VaButton class="w-full" @click="submit"> Login</VaButton>
+      <VaButton class="w-full" @click="submit"> Iniciar Sesión</VaButton>
     </div>
   </VaForm>
 </template>
