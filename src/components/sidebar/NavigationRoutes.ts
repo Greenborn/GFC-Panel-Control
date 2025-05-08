@@ -46,6 +46,13 @@ export default {
         icon: "folder_shared",
       },
     },
+    {
+      name: "categorias",
+      displayName: "Categorías",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
     /*{
       name: 'payments',
       displayName: 'menu.payments',
