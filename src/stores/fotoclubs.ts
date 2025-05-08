@@ -7,12 +7,12 @@ import {
   Sorting,
   updateProject,
 } from "../data/pages/projects";
-import { Project } from "../pages/contests/types";
+import { Fotoclubs } from "../pages/fotoclubs/types";
 
-export const useProjectsStore = defineStore("projects", {
+export const useFotoclubsStore = defineStore("fotoclubs", {
   state: () => {
     return {
-      items: [] as Project[],
+      items: [] as Fotoclubs[],
       pagination: {
         page: 1,
         perPage: 10,
@@ -31,18 +31,18 @@ export const useProjectsStore = defineStore("projects", {
       this.pagination = pagination;
     },
 
-    async add(project: Omit<Project, "id" | "created_at">) {
+    async add(project: Omit<Fotoclubs, "id" | "created_at">) {
       const [newProject] = await addProject(project);
       this.items.push(newProject);
     },
 
-    async update(project: Project) {
+    async update(project: Fotoclubs) {
       const [updatedProject] = await updateProject(project);
       const index = this.items.findIndex(({ id }) => id === project.id);
       this.items.splice(index, 1, updatedProject);
     },
 
-    async remove(project: Project) {
+    async remove(project: Fotoclubs) {
       const isRemoved = await removeProject(project);
 
       if (isRemoved) {
