@@ -53,6 +53,13 @@ export default {
         icon: "folder_shared",
       },
     },
+    {
+      name: "metricas",
+      displayName: "Métricas",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
     /*{
       name: 'payments',
       displayName: 'menu.payments',
