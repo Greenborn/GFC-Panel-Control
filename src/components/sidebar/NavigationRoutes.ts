@@ -39,6 +39,13 @@ export default {
         icon: "folder_shared",
       },
     },
+    {
+      name: "secciones",
+      displayName: "Secciones",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
     /*{
       name: 'payments',
       displayName: 'menu.payments',
