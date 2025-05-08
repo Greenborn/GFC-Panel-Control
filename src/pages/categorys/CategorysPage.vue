@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { ref, provide } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { useFotoclubs } from "./composables/useFotoclubs";
-import FotoclubTable from "./widgets/FotoclubsTable.vue";
-import EditFotoclubForm from "./widgets/EditFotoclubForm.vue";
-import { Fotoclub } from "./types";
+import { useProjects } from "./composables/useProjects";
+import ProjectCards from "./widgets/ProjectCards.vue";
+import ProjectTable from "./widgets/ProjectsTable.vue";
+import EditProjectForm from "./widgets/EditProjectForm.vue";
+import { Project } from "./types";
 import { useModal, useToast } from "vuestic-ui";
-import { useFotoclubUsers } from "./composables/useFotoclubUsers";
+import { useProjectUsers } from "./composables/useProjectUsers";
 
 const doShowAsCards = useLocalStorage("projects-view", true);
 
 const { projects, update, add, isLoading, remove, pagination, sorting } =
-  useFotoclubs();
+  useProjects();
 
-const { users, getTeamOptions, getUserById } = useFotoclubUsers();
+const { users, getTeamOptions, getUserById } = useProjectUsers();
 
 provide("ContestsPage", {
   users,
@@ -21,33 +22,33 @@ provide("ContestsPage", {
   getUserById,
 });
 
-const projectToEdit = ref<Fotoclub | null>(null);
-const doShowFotoclubFormModal = ref(false);
+const projectToEdit = ref<Project | null>(null);
+const doShowProjectFormModal = ref(false);
 
-const editFotoclub = (project: Fotoclub) => {
+const editProject = (project: Project) => {
   projectToEdit.value = project;
-  doShowFotoclubFormModal.value = true;
+  doShowProjectFormModal.value = true;
 };
 
-const createNewFotoclub = () => {
+const createNewProject = () => {
   projectToEdit.value = null;
-  doShowFotoclubFormModal.value = true;
+  doShowProjectFormModal.value = true;
 };
 
 const { init: notify } = useToast();
 
-const onFotoclubSaved = async (project: Fotoclub) => {
-  doShowFotoclubFormModal.value = false;
+const onProjectSaved = async (project: Project) => {
+  doShowProjectFormModal.value = false;
   if ("id" in project) {
-    await update(project as Fotoclub);
+    await update(project as Project);
     notify({
-      message: "Fotoclub updated",
+      message: "Project updated",
       color: "success",
     });
   } else {
-    await add(project as Fotoclub);
+    await add(project as Project);
     notify({
-      message: "Fotoclub created",
+      message: "Project created",
       color: "success",
     });
   }
@@ -55,7 +56,7 @@ const onFotoclubSaved = async (project: Fotoclub) => {
 
 const { confirm } = useModal();
 
-const onFotoclubDeleted = async (project: Fotoclub) => {
+const onProjectDeleted = async (project: Project) => {
   const response = await confirm({
     title: "Delete project",
     message: `Are you sure you want to delete project "${project.project_name}"?`,
@@ -70,7 +71,7 @@ const onFotoclubDeleted = async (project: Fotoclub) => {
 
   await remove(project);
   notify({
-    message: "Fotoclub deleted",
+    message: "Project deleted",
     color: "success",
   });
 };
@@ -94,28 +95,47 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
 </script>
 
 <template>
-  <h1 class="page-title">Fotoclubs</h1>
+  <h1 class="page-title">Categorías</h1>
 
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewFotoclub">Fotoclub</VaButton>
+        <div class="flex flex-col md:flex-row gap-2 justify-start">
+          <VaButtonToggle
+            v-model="doShowAsCards"
+            color="background-element"
+            border-color="background-element"
+            :options="[
+              { label: 'Cards', value: true },
+              { label: 'Table', value: false },
+            ]"
+          />
+        </div>
+        <VaButton icon="add" @click="createNewProject">Categoria</VaButton>
       </div>
 
-      <FotoclubTable
+      <ProjectCards
+        v-if="doShowAsCards"
+        :projects="projects"
+        :loading="isLoading"
+        @edit="editProject"
+        @delete="onProjectDeleted"
+      />
+      <ProjectTable
+        v-else
         v-model:sort-by="sorting.sortBy"
         v-model:sorting-order="sorting.sortingOrder"
         v-model:pagination="pagination"
         :projects="projects"
         :loading="isLoading"
-        @edit="editFotoclub"
-        @delete="onFotoclubDeleted"
+        @edit="editProject"
+        @delete="onProjectDeleted"
       />
     </VaCardContent>
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowFotoclubFormModal"
+      v-model="doShowProjectFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -125,14 +145,14 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditFotoclubForm
+      <EditProjectForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
         @close="cancel"
         @save="
           (project) => {
-            onFotoclubSaved(project);
+            onProjectSaved(project);
             ok();
           }
         "

@@ -2,7 +2,7 @@ import { User } from "../users/types";
 
 export type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
-export type Fotoclub = {
+export type Project = {
   id: UUID;
   project_name: string;
   project_owner: User["id"];
@@ -11,10 +11,10 @@ export type Fotoclub = {
   created_at: string;
 };
 
-export type EmptyFotoclub = Omit<
-  Fotoclub,
+export type EmptyProject = Omit<
+  Project,
   "id" | "project_owner" | "created_at" | "status"
 > & {
-  project_owner: Fotoclub["project_owner"] | undefined;
-  status: Fotoclub["status"] | undefined;
+  project_owner: Project["project_owner"] | undefined;
+  status: Project["status"] | undefined;
 };

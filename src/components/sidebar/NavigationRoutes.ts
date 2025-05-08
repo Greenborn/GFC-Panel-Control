@@ -46,27 +46,20 @@ export default {
         icon: "folder_shared",
       },
     },
-    /*{
-      name: 'payments',
-      displayName: 'menu.payments',
+    {
+      name: "categorias",
+      displayName: "Categorías",
       meta: {
-        icon: 'credit_card',
+        icon: "folder_shared",
       },
-      children: [
-        {
-          name: 'payment-methods',
-          displayName: 'menu.payment-methods',
-        },
-        {
-          name: 'pricing-plans',
-          displayName: 'menu.pricing-plans',
-        },
-        {
-          name: 'billing',
-          displayName: 'menu.billing',
-        },
-      ],
-    },*/
+    },
+    {
+      name: "metricas",
+      displayName: "Métricas",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
     {
       name: "auth",
       displayName: "menu.auth",
@@ -76,33 +69,10 @@ export default {
       children: [
         {
           name: "login",
-          displayName: "menu.login",
-        },
-        {
-          name: "signup",
-          displayName: "menu.signup",
-        },
-        {
-          name: "recover-password",
-          displayName: "menu.recover-password",
+          displayName: "Ingresar",
         },
       ],
     },
-    /*
-    {
-      name: 'faq',
-      displayName: 'menu.faq',
-      meta: {
-        icon: 'quiz',
-      },
-    },
-    {
-      name: '404',
-      displayName: 'menu.404',
-      meta: {
-        icon: 'vuestic-iconset-files',
-      },
-    },*/
     {
       name: "preferences",
       displayName: "menu.preferences",
@@ -110,12 +80,12 @@ export default {
         icon: "manage_accounts",
       },
     },
-    {
+    /*{
       name: "settings",
       displayName: "menu.settings",
       meta: {
         icon: "settings",
       },
-    },
+    },*/
   ] as INavigationRoute[],
 };
