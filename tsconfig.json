@@ -21,6 +21,6 @@
     "src/**/*.vue",
     "vite.config.ts",
     "node_modules/vuestic-ui"
-  ],
+, "src/pages/fotoclubs/composables/useFotoclubs"  ],
   "exclude": ["node_modules/**/*"]
 }

@@ -1,7 +1,7 @@
 import { Ref, ref, unref, computed } from "vue";
 import { Sorting, Pagination } from "../../../data/pages/projects";
 import { Project } from "../types";
-import { useProjectsStore } from "../../../stores/projects";
+import { useProjectsStore } from "../../../stores/fotoclubs";
 import { useProjectUsers } from "./useProjectUsers";
 
 const makePaginationRef = () =>
