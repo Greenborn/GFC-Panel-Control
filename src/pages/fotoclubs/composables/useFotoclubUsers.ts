@@ -1,7 +1,7 @@
 import { useUsers } from "../../users/composables/useUsers";
-import { Project } from "../types";
+import { Fotoclub } from "../types";
 
-export function useProjectUsers() {
+export function useFotoclubUsers() {
   const { users } = useUsers();
 
   const getUserById = (userId: string) => {
@@ -14,7 +14,7 @@ export function useProjectUsers() {
     return colors[index];
   };
 
-  const getTeamOptions = (team: Project["team"]) => {
+  const getTeamOptions = (team: Fotoclub["team"]) => {
     return team.reduce(
       (acc, userId) => {
         const user = getUserById(userId);
