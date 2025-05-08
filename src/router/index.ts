@@ -20,58 +20,55 @@ const routes: Array<RouteRecordRaw> = [
         name: "dashboard",
         path: "dashboard",
         component: () => import("../pages/admin/dashboard/Dashboard.vue"),
+        meta: { requiresAuth: true },
       },
       {
         name: "settings",
         path: "settings",
         component: () => import("../pages/settings/Settings.vue"),
+        meta: { requiresAuth: true },
       },
       {
         name: "preferences",
         path: "preferences",
         component: () => import("../pages/preferences/Preferences.vue"),
+        meta: { requiresAuth: true },
       },
       {
         name: "users",
         path: "users",
         component: () => import("../pages/users/UsersPage.vue"),
+        meta: { requiresAuth: true },
       },
       {
         name: "projects",
         path: "projects",
         component: () => import("../pages/contests/ConstestsPage.vue"),
+        meta: { requiresAuth: true },
       },
       {
         name: "fotoclubs",
         path: "fotoclubs",
         component: () => import("../pages/fotoclubs/FotoclubsPage.vue"),
+        meta: { requiresAuth: true },
       },
       {
-        name: "payments",
-        path: "/payments",
-        component: RouteViewComponent,
-        children: [
-          {
-            name: "payment-methods",
-            path: "payment-methods",
-            component: () => import("../pages/payments/PaymentsPage.vue"),
-          },
-          {
-            name: "billing",
-            path: "billing",
-            component: () => import("../pages/billing/BillingPage.vue"),
-          },
-          {
-            name: "pricing-plans",
-            path: "pricing-plans",
-            component: () => import("../pages/pricing-plans/PricingPlans.vue"),
-          },
-        ],
+        name: "secciones",
+        path: "secciones",
+        component: () => import("../pages/sections/SectionsPage.vue"),
+        meta: { requiresAuth: true },
       },
       {
-        name: "faq",
-        path: "/faq",
-        component: () => import("../pages/faq/FaqPage.vue"),
+        name: "categorias",
+        path: "categorias",
+        component: () => import("../pages/categorys/CategorysPage.vue"),
+        meta: { requiresAuth: true },
+      },
+      {
+        name: "metricas",
+        path: "metricas",
+        component: () => import("../pages/metrics/MetricsPage.vue"),
+        meta: { requiresAuth: true },
       },
     ],
   },
@@ -126,6 +123,18 @@ const router = createRouter({
     }
   },
   routes,
+})
+
+// Middleware de autenticación
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.meta.requiresAuth;
+  const isAuthenticated = localStorage.getItem("token") !== null;
+
+  if (requiresAuth && !isAuthenticated) {
+    next({ name: "login" });
+  } else {
+    next();
+  }
 });
 
 export default router;
