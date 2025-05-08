@@ -87,7 +87,8 @@ const submit = () => {
     })
     .then((response) => {
       if (response.data.r === true) {
-        init({ message: "You've successfully logged in", color: "success" });
+        localStorage.setItem('token', response.data.t);
+        init({ message: "Sesión iniciada", color: "success" });
         push({ name: "dashboard" });
       } else {
         init({ message: "Error de login", color: "error" });
