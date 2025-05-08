@@ -20,7 +20,7 @@ const doShowFotoclubFormModal = ref(false);
       </div>
 
       <FotoclubTable
-        :projects="projects"
+        :data="[{},{}]"
         :loading="isLoading"
         @edit="editFotoclub"
         @delete="onFotoclubDeleted"
