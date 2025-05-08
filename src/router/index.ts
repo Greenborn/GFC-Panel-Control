@@ -42,6 +42,26 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../pages/contests/ConstestsPage.vue"),
       },
       {
+        name: "fotoclubs",
+        path: "fotoclubs",
+        component: () => import("../pages/fotoclubs/FotoclubsPage.vue"),
+      },
+      {
+        name: "secciones",
+        path: "secciones",
+        component: () => import("../pages/sections/SectionsPage.vue"),
+      },
+      {
+        name: "categorias",
+        path: "categorias",
+        component: () => import("../pages/categorys/CategorysPage.vue"),
+      },
+      {
+        name: "metricas",
+        path: "metricas",
+        component: () => import("../pages/metrics/MetricsPage.vue"),
+      },
+      {
         name: "payments",
         path: "/payments",
         component: RouteViewComponent,

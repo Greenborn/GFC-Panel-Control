@@ -32,6 +32,34 @@ export default {
         icon: "folder_shared",
       },
     },
+    {
+      name: "fotoclubs",
+      displayName: "Fotoclubs",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
+    {
+      name: "secciones",
+      displayName: "Secciones",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
+    {
+      name: "categorias",
+      displayName: "Categorías",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
+    {
+      name: "metricas",
+      displayName: "Métricas",
+      meta: {
+        icon: "folder_shared",
+      },
+    },
     /*{
       name: 'payments',
       displayName: 'menu.payments',
