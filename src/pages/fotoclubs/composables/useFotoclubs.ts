@@ -1,21 +1,21 @@
 import { Ref, ref, unref, computed } from "vue";
 import { Sorting, Pagination } from "../../../data/pages/projects";
-import { Project } from "../types";
-import { useProjectsStore } from "../../../stores/projects";
-import { useProjectUsers } from "./useProjectUsers";
+import { Fotoclub } from "../types";
+import { useFotoclubsStore } from "../../../stores/fotoclubs";
+import { useFotoclubUsers } from "./useFotoclubUsers";
 
 const makePaginationRef = () =>
   ref<Pagination>({ page: 1, perPage: 10, total: 0 });
 const makeSortingRef = () =>
   ref<Sorting>({ sortBy: "created_at", sortingOrder: "desc" });
 
-export const useProjects = (options?: {
+export const useFotoclubs = (options?: {
   sorting?: Ref<Sorting>;
   pagination?: Ref<Pagination>;
 }) => {
   const isLoading = ref(false);
-  const projectsStore = useProjectsStore();
-  const { getUserById } = useProjectUsers();
+  const projectsStore = useFotoclubsStore();
+  const { getUserById } = useFotoclubUsers();
 
   const { sorting = makeSortingRef(), pagination = makePaginationRef() } =
     options ?? {};
@@ -82,21 +82,21 @@ export const useProjects = (options?: {
 
     fetch,
 
-    async add(project: Omit<Project, "id" | "created_at">) {
+    async add(project: Omit<Fotoclub, "id" | "created_at">) {
       isLoading.value = true;
       await projectsStore.add(project);
       await fetch();
       isLoading.value = false;
     },
 
-    async update(project: Project) {
+    async update(project: Fotoclub) {
       isLoading.value = true;
       await projectsStore.update(project);
       await fetch();
       isLoading.value = false;
     },
 
-    async remove(project: Project) {
+    async remove(project: Fotoclub) {
       isLoading.value = true;
       await projectsStore.remove(project);
       await fetch();
