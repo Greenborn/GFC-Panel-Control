@@ -1,19 +1,20 @@
-<script setup lang="ts">
+<script setup>
 import { computed, inject } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
+
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 
 const columns = defineVaDataTableColumns([
-  { label: "Project name", key: "project_name", sortable: true },
-  { label: "Project owner", key: "project_owner", sortable: true },
-  { label: "Team", key: "team", sortable: true },
-  { label: "Status", key: "status", sortable: true },
-  { label: "Creation Date", key: "created_at", sortable: true },
-  { label: " ", key: "actions" },
+  { label: "Nombre",      key: "name", sortable: true },
+  { label: "Descripcion", key: "description", sortable: true },
+  { label: "Facebook",    key: "facebook", sortable: true },
+  { label: "Instagram",   key: "instagram", sortable: true },
+  { label: "Email",       key: "email", sortable: true },
+  { label: " ",           key: "actions" },
 ]);
 
-const props = defineProps({
-});
+const props = defineProps([ 'data', 'loading' ]);
+const emit  = defineEmits(['edit', 'delete'])
 
 </script>
 
@@ -22,7 +23,7 @@ const props = defineProps({
     <VaDataTable
       v-model:sort-by="sortByVModel"
       v-model:sorting-order="sortingOrderVModel"
-      :items="projects"
+      :items="props.data"
       :columns="columns"
       :loading="loading"
     >
@@ -62,7 +63,7 @@ const props = defineProps({
             color="primary"
             icon="mso-edit"
             aria-label="Edit project"
-            @click="$emit('edit', project as Project)"
+            @click="$emit('edit', project )"
           />
           <VaButton
             preset="primary"
@@ -70,7 +71,7 @@ const props = defineProps({
             icon="mso-delete"
             color="danger"
             aria-label="Delete project"
-            @click="$emit('delete', project as Project)"
+            @click="$emit('delete', project )"
           />
         </div>
       </template>
@@ -78,31 +79,9 @@ const props = defineProps({
     <div
       class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2"
     >
-
+      
       <div v-if="totalPages > 1" class="flex">
-        <VaButton
-          preset="secondary"
-          icon="va-arrow-left"
-          aria-label="Previous page"
-          :disabled="$props.pagination.page === 1"
-          @click="$props.pagination.page--"
-        />
-        <VaButton
-          class="mr-2"
-          preset="secondary"
-          icon="va-arrow-right"
-          aria-label="Next page"
-          :disabled="$props.pagination.page === totalPages"
-          @click="$props.pagination.page++"
-        />
-        <VaPagination
-          v-model="$props.pagination.page"
-          buttons-preset="secondary"
-          :pages="totalPages"
-          :visible-pages="5"
-          :boundary-links="false"
-          :direction-links="false"
-        />
+        
       </div>
     </div>
   </div>
