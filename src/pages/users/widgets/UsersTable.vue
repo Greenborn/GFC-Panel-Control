@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { defineVaDataTableColumns, useModal } from "vuestic-ui";
-import { User, UserRole } from "../types";
 import UserAvatar from "./UserAvatar.vue";
 import { PropType, computed, toRef } from "vue";
 import { Pagination, Sorting } from "../../../data/pages/users";
 import { useVModel } from "@vueuse/core";
-import { Project } from "../../contests/types";
 
 const columns = defineVaDataTableColumns([
   { label: "Full Name", key: "fullname", sortable: true },
@@ -17,28 +15,9 @@ const columns = defineVaDataTableColumns([
 ]);
 
 const props = defineProps({
-  users: {
-    type: Array as PropType<User[]>,
-    required: true,
-  },
-  projects: {
-    type: Array as PropType<Project[]>,
-    required: true,
-  },
-  loading: { type: Boolean, default: false },
-  pagination: { type: Object as PropType<Pagination>, required: true },
-  sortBy: { type: String as PropType<Sorting["sortBy"]>, required: true },
-  sortingOrder: {
-    type: String as PropType<Sorting["sortingOrder"]>,
-    default: null,
-  },
 });
 
 const emit = defineEmits<{
-  (event: "edit-user", user: User): void;
-  (event: "delete-user", user: User): void;
-  (event: "update:sortBy", sortBy: Sorting["sortBy"]): void;
-  (event: "update:sortingOrder", sortingOrder: Sorting["sortingOrder"]): void;
 }>();
 
 const users = toRef(props, "users");
@@ -50,10 +29,6 @@ const roleColors: Record<UserRole, string> = {
   user: "background-element",
   owner: "warning",
 };
-
-const totalPages = computed(() =>
-  Math.ceil(props.pagination.total / props.pagination.perPage),
-);
 
 const { confirm } = useModal();
 
@@ -101,8 +76,6 @@ const formatProjectNames = (projects: Project["id"][]) => {
 
 <template>
   <VaDataTable
-    v-model:sort-by="sortByVModel"
-    v-model:sorting-order="sortingOrderVModel"
     :columns="columns"
     :items="users"
     :loading="$props.loading"
@@ -163,40 +136,9 @@ const formatProjectNames = (projects: Project["id"][]) => {
   <div
     class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2"
   >
-    <div>
-      <b>{{ $props.pagination.total }} results.</b>
-      Results per page
-      <VaSelect
-        v-model="$props.pagination.perPage"
-        class="!w-20"
-        :options="[10, 50, 100]"
-      />
-    </div>
-
+    
     <div v-if="totalPages > 1" class="flex">
-      <VaButton
-        preset="secondary"
-        icon="va-arrow-left"
-        aria-label="Previous page"
-        :disabled="$props.pagination.page === 1"
-        @click="$props.pagination.page--"
-      />
-      <VaButton
-        class="mr-2"
-        preset="secondary"
-        icon="va-arrow-right"
-        aria-label="Next page"
-        :disabled="$props.pagination.page === totalPages"
-        @click="$props.pagination.page++"
-      />
-      <VaPagination
-        v-model="$props.pagination.page"
-        buttons-preset="secondary"
-        :pages="totalPages"
-        :visible-pages="5"
-        :boundary-links="false"
-        :direction-links="false"
-      />
+      
     </div>
   </div>
 </template>
