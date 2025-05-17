@@ -59,7 +59,7 @@
   </VaForm>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 
 import axios from 'axios';
 
