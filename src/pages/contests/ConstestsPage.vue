@@ -1,14 +1,23 @@
-<script setup lang="ts">
-import { ref, provide } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import ContestsTable from "./widgets/ContestsTable.vue";
 import EditConstestForm from "./widgets/EditConstestForm.vue";
 
+import axios from 'axios'
 
 const projectToEdit = ref(null);
 const doShowProjectFormModal = ref(false);
 
 const contests = ref([])
+
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'contests/get_all')
+  if (response){
+    contests.value = response.data.items
+    console.log(contests.value)
+  }
+})
 </script>
 
 <template>
