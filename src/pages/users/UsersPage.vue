@@ -1,21 +1,18 @@
-<script setup lang="ts">
-import { ref, watchEffect } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
 import UsersTable from "./widgets/UsersTable.vue";
 import EditUserForm from "./widgets/EditUserForm.vue";
-import { User } from "./types";
-import { useUsers } from "./composables/useUsers";
 import { useModal, useToast } from "vuestic-ui";
+import axios from 'axios';
 //import { useProjects } from "../projects/composables/useProjects";
 
 const doShowEditUserModal = ref(false);
 
-const { users, isLoading, filters, sorting, pagination, error, ...usersApi } =
-  useUsers();
 //const { projects } = useProjects();
 
-const userToEdit = ref<User | null>(null);
+const userToEdit = ref(null);
 
-const showEditUserModal = (user: User) => {
+const showEditUserModal = (user) => {
   userToEdit.value = user;
   doShowEditUserModal.value = true;
 };
@@ -25,70 +22,16 @@ const showAddUserModal = () => {
   doShowEditUserModal.value = true;
 };
 
-const { init: notify } = useToast();
+const users = ref([]);
 
-watchEffect(() => {
-  if (error.value) {
-    notify({
-      message: error.value.message,
-      color: "danger",
-    });
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'users/get_all')
+  if (response){
+    users.value = response.data.items
+    console.log(users.value)
   }
-});
+})
 
-const onUserSaved = async (user: User) => {
-  if (user.avatar.startsWith("blob:")) {
-    const blob = await fetch(user.avatar).then((r) => r.blob());
-    const { publicUrl } = await usersApi.uploadAvatar(blob);
-    user.avatar = publicUrl;
-  }
-
-  if (userToEdit.value) {
-    await usersApi.update(user);
-    if (!error.value) {
-      notify({
-        message: `${user.fullname} has been updated`,
-        color: "success",
-      });
-    }
-  } else {
-    await usersApi.add(user);
-
-    if (!error.value) {
-      notify({
-        message: `${user.fullname} has been created`,
-        color: "success",
-      });
-    }
-  }
-};
-
-const onUserDelete = async (user: User) => {
-  await usersApi.remove(user);
-  notify({
-    message: `${user.fullname} has been deleted`,
-    color: "success",
-  });
-};
-
-const editFormRef = ref();
-
-const { confirm } = useModal();
-
-const beforeEditFormModalClose = async (hide: () => unknown) => {
-  if (editFormRef.value.isFormHasUnsavedChanges) {
-    const agreed = await confirm({
-      maxWidth: "380px",
-      message: "Form has unsaved changes. Are you sure you want to close it?",
-      size: "small",
-    });
-    if (agreed) {
-      hide();
-    }
-  } else {
-    hide();
-  }
-};
 </script>
 
 <template>
@@ -99,7 +42,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
         <div class="flex flex-col md:flex-row gap-2 justify-start">
 
-          <VaInput v-model="filters.search" placeholder="Search">
+          <VaInput  placeholder="Buscar">
             <template #prependInner>
               <VaIcon name="search" color="secondary" size="small" />
             </template>
@@ -110,14 +53,8 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
       </div>
 
       <UsersTable
-        v-model:sort-by="sorting.sortBy"
-        v-model:sorting-order="sorting.sortingOrder"
         :users="users"
-        
         :loading="isLoading"
-        :pagination="pagination"
-        @editUser="showEditUserModal"
-        @deleteUser="onUserDelete"
       />
     </VaCardContent>
   </VaCard>

@@ -1,14 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import { defineVaDataTableColumns } from "vuestic-ui";
+import UserAvatar from "../../users/widgets/UserAvatar.vue";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
-
 const columns = defineVaDataTableColumns([
-  { label: "Project name", key: "project_name", sortable: true },
-  { label: "Project owner", key: "project_owner", sortable: true },
-  { label: "Team", key: "team", sortable: true },
-  { label: "Status", key: "status", sortable: true },
-  { label: "Creation Date", key: "created_at", sortable: true },
-  { label: " ", key: "actions" },
 ]);
 
 const props = defineProps({
@@ -33,10 +27,16 @@ const props = defineProps({
           v-if="getUserById(rowData.project_owner)"
           class="flex items-center gap-2 ellipsis max-w-[230px]"
         >
+          <UserAvatar :user="getUserById(rowData.project_owner)" size="small" />
           {{ getUserById(rowData.project_owner).fullname }}
         </div>
       </template>
       <template #cell(team)="{ rowData: project }">
+        <VaAvatarGroup
+          size="small"
+          :options="getTeamOptions(project.team)"
+          :max="5"
+        />
       </template>
       <template #cell(status)="{ rowData: project }">
         <ProjectStatusBadge :status="project.status" />
@@ -54,7 +54,7 @@ const props = defineProps({
             color="primary"
             icon="mso-edit"
             aria-label="Edit project"
-            @click="$emit('edit', project as Project)"
+            @click="$emit('edit', project)"
           />
           <VaButton
             preset="primary"
@@ -62,7 +62,7 @@ const props = defineProps({
             icon="mso-delete"
             color="danger"
             aria-label="Delete project"
-            @click="$emit('delete', project as Project)"
+            @click="$emit('delete', project)"
           />
         </div>
       </template>
@@ -70,7 +70,11 @@ const props = defineProps({
     <div
       class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2"
     >
-     
+      <div>
+       
+      </div>
+
+      
     </div>
   </div>
 </template>
