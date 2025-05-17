@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { ref, provide } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import ProjectTable from "./widgets/ContestsTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
-import { Project } from "./types";
-import { useModal, useToast } from "vuestic-ui";
-
-const doShowAsCards = useLocalStorage("projects-view", true);
+import ContestsTable from "./widgets/ContestsTable.vue";
+import EditConstestForm from "./widgets/EditConstestForm.vue";
 
 
-const projectToEdit = ref<Project | null>(null);
+const projectToEdit = ref(null);
 const doShowProjectFormModal = ref(false);
 
+const contests = ref([])
 </script>
 
 <template>
@@ -23,11 +20,11 @@ const doShowProjectFormModal = ref(false);
         <VaButton icon="add" @click="createNewProject">Concurso</VaButton>
       </div>
 
-      <ProjectTable
-        :projects="projects"
+      <ContestsTable
+        :contests="contests"
         :loading="isLoading"
-        @edit="editProject"
-        @delete="onProjectDeleted"
+        @edit=""
+        @delete=""
       />
     </VaCardContent>
 
@@ -43,7 +40,7 @@ const doShowProjectFormModal = ref(false);
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditConstestForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
