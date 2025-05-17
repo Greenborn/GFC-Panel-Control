@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ const registros = ref([]);
 
     onMounted(async () => {
       try {
-        const response = await axios.get('http://localhost:7778/api/log-operaciones');
+        const response = await axios.get(import.meta.env.VITE_API_URL+'/log/get_all');
         registros.value = response.data;
       } catch (error) {
         console.error(error);
