@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useLocalStorage } from "@vueuse/core";
 import ContestsTable from "./widgets/ContestsTable.vue";
 import EditConstestForm from "./widgets/EditConstestForm.vue";
 

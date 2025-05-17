@@ -1,13 +1,22 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from 'axios'
 
 import FotoclubTable from "./widgets/FotoclubsTable.vue";
 import EditFotoclubForm from "./widgets/EditFotoclubForm.vue";
-import { useModal, useToast } from "vuestic-ui";
 
 const projectToEdit = ref(null);
 const doShowFotoclubFormModal = ref(false);
 
+const fotoclubs = ref([])
+
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'fotoclub/get_all')
+  if (response){
+    fotoclubs.value = response.data.items
+    console.log(fotoclubs.value)
+  }
+})
 </script>
 
 <template>
@@ -20,7 +29,7 @@ const doShowFotoclubFormModal = ref(false);
       </div>
 
       <FotoclubTable
-        :data="[{},{}]"
+        :data="fotoclubs"
         :loading="isLoading"
         @edit="editFotoclub"
         @delete="onFotoclubDeleted"
