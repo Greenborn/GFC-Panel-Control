@@ -8,7 +8,7 @@ const registros = ref([]);
 
     onMounted(async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_API_URL+'/log/get_all');
+        const response = await axios.get(import.meta.env.VITE_API_URL+'log/get_all');
         registros.value = response.data;
       } catch (error) {
         console.error(error);

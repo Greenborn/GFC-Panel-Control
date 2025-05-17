@@ -80,7 +80,7 @@ const formData = ref({
 
 const submit = () => {
   if (validate()) {
-    axios.post(import.meta.env.VITE_API_URL+'/auth/login', {
+    axios.post(import.meta.env.VITE_API_URL+'auth/login', {
       // datos de login
       username: formData.value.email,
       password: formData.value.password
