@@ -1,5 +1,4 @@
 <script setup>
-import { computed, inject } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
 
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
