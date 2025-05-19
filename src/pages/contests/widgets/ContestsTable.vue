@@ -1,40 +1,18 @@
-<script setup lang="ts">
-import {  computed, inject } from "vue";
+<script setup>
 import { defineVaDataTableColumns } from "vuestic-ui";
 import UserAvatar from "../../users/widgets/UserAvatar.vue";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
-import { useVModel } from "@vueuse/core";
-
 const columns = defineVaDataTableColumns([
-  { label: "Project name", key: "project_name", sortable: true },
-  { label: "Project owner", key: "project_owner", sortable: true },
-  { label: "Team", key: "team", sortable: true },
-  { label: "Status", key: "status", sortable: true },
-  { label: "Creation Date", key: "created_at", sortable: true },
-  { label: " ", key: "actions" },
 ]);
 
 const props = defineProps({
 });
 
-const emit = defineEmits<{
-  (event: "edit", project: Project): void;
-  (event: "delete", project: Project): void;
-}>();
-
-const sortByVModel = useVModel(props, "sortBy", emit);
-const sortingOrderVModel = useVModel(props, "sortingOrder", emit);
-
-const totalPages = computed(() =>
-  Math.ceil(props.pagination.total / props.pagination.perPage),
-);
 </script>
 
 <template>
   <div>
     <VaDataTable
-      v-model:sort-by="sortByVModel"
-      v-model:sorting-order="sortingOrderVModel"
       :items="projects"
       :columns="columns"
       :loading="loading"
@@ -76,7 +54,7 @@ const totalPages = computed(() =>
             color="primary"
             icon="mso-edit"
             aria-label="Edit project"
-            @click="$emit('edit', project as Project)"
+            @click="$emit('edit', project)"
           />
           <VaButton
             preset="primary"
@@ -84,7 +62,7 @@ const totalPages = computed(() =>
             icon="mso-delete"
             color="danger"
             aria-label="Delete project"
-            @click="$emit('delete', project as Project)"
+            @click="$emit('delete', project)"
           />
         </div>
       </template>

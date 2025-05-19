@@ -1,22 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { EmptyProject, Project } from "../types";
 import { SelectOption } from "vuestic-ui";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 import UserAvatar from "../../users/widgets/UserAvatar.vue";
-import { useUsersStore } from "../../../stores/users";
 
-const props = defineProps<{
-  project: Project | null;
-  saveButtonLabel: string;
-}>();
+const props = defineProps({});
 
-defineEmits<{
-  (event: "save", project: Project): void;
-  (event: "close"): void;
-}>();
-
-const defaultNewProject: EmptyProject = {
+const defaultNewProject = {
   project_name: "",
   project_owner: undefined,
   team: [],
@@ -32,8 +22,8 @@ const isFormHasUnsavedChanges = computed(() => {
     }
 
     return (
-      newProject.value[key as keyof EmptyProject] !==
-      (props.project ?? defaultNewProject)?.[key as keyof EmptyProject]
+      newProject.value[key] !==
+      (props.project ?? defaultNewProject)?.[key]
     );
   });
 });
@@ -42,7 +32,6 @@ defineExpose({
   isFormHasUnsavedChanges,
 });
 
-const usersStore = useUsersStore();
 
 watch(
   () => props.project,
@@ -59,7 +48,7 @@ watch(
   { immediate: true },
 );
 
-const required = (v: string | SelectOption) => !!v || "This field is required";
+const required = (v) => !!v || "This field is required";
 
 const ownerFiltersSearch = ref("");
 const teamFiltersSearch = ref("");

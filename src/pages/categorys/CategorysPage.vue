@@ -1,13 +1,23 @@
-<script setup lang="ts">
-import { ref,  } from "vue";
-import ProjectTable from "./widgets/ProjectsTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
-import { useModal, useToast } from "vuestic-ui";
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from 'axios'
 
+import CategorysTable from "./widgets/CategorysTable.vue";
+import EditCategoryForm from "./widgets/EditCategoryForm.vue";
 
 const projectToEdit = ref(null);
 const doShowProjectFormModal = ref(false);
 
+const isLoading = ref(false)
+const categories = ref([])
+
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'category/get_all')
+  if (response){
+    categories.value = response.data.items
+    console.log(categories.value)
+  }
+})
 </script>
 
 <template>
@@ -21,8 +31,8 @@ const doShowProjectFormModal = ref(false);
       </div>
 
       
-      <ProjectTable
-        :projects="projects"
+      <CategorysTable
+        :categories="categories"
         :loading="isLoading"
         @edit="editProject"
         @delete="onProjectDeleted"
@@ -41,7 +51,7 @@ const doShowProjectFormModal = ref(false);
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditCategoryForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
