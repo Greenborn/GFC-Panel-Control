@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import axios from 'axios'
 
 import CategorysTable from "./widgets/CategorysTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
+import EditCategoryForm from "./widgets/EditCategoryForm.vue";
 
 const projectToEdit = ref(null);
 const doShowProjectFormModal = ref(false);
@@ -51,7 +51,7 @@ onMounted(async () => {
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditCategoryForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
