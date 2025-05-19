@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, inject } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 
@@ -12,17 +11,14 @@ const columns = defineVaDataTableColumns([
   { label: " ", key: "actions" },
 ]);
 
-const props = defineProps({
-});
+const props = defineProps(["categories", "loading"]);
 
 </script>
 
 <template>
   <div>
     <VaDataTable
-      v-model:sort-by="sortByVModel"
-      v-model:sorting-order="sortingOrderVModel"
-      :items="projects"
+      :items="categories"
       :columns="columns"
       :loading="loading"
     >
