@@ -1,8 +1,8 @@
-<script setup lang="ts">
+<script setup>
 import { ref } from "vue";
 
 import SectionsTable from "./widgets/SectionsTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
+import EditSectionForm from "./widgets/EditSectionForm.vue";
 import { useModal, useToast } from "vuestic-ui";
 
 const projectToEdit = ref(null);
@@ -38,7 +38,7 @@ const doShowFotoclubFormModal = ref(false);
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditSectionForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"

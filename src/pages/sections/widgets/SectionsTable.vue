@@ -2,7 +2,7 @@
 import {  computed, inject } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
 
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+import ProjectStatusBadge from "../components/SectionStatusBadge.vue";
 import { useVModel } from "@vueuse/core";
 
 const columns = defineVaDataTableColumns([
