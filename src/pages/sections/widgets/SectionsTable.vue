@@ -1,8 +1,8 @@
-<script setup lang="ts">
-import {  computed, inject } from "vue";
+<script setup>
+import { ref } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
 
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+import ProjectStatusBadge from "../components/SectionStatusBadge.vue";
 import { useVModel } from "@vueuse/core";
 
 const columns = defineVaDataTableColumns([
@@ -14,15 +14,13 @@ const columns = defineVaDataTableColumns([
   { label: " ", key: "actions" },
 ]);
 
-const props = defineProps({});
-
-
+const props   = defineProps(["sections", "loading"]);
 </script>
 
 <template>
   <div>
     <VaDataTable
-      :items="projects"
+      :items="sections"
       :columns="columns"
       :loading="loading"
     >
@@ -62,7 +60,7 @@ const props = defineProps({});
             color="primary"
             icon="mso-edit"
             aria-label="Edit project"
-            @click="$emit('edit', project as Project)"
+            @click="$emit('edit', project)"
           />
           <VaButton
             preset="primary"
@@ -70,7 +68,7 @@ const props = defineProps({});
             icon="mso-delete"
             color="danger"
             aria-label="Delete project"
-            @click="$emit('delete', project as Project)"
+            @click="$emit('delete', project)"
           />
         </div>
       </template>
