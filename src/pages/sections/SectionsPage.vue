@@ -1,12 +1,23 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from 'axios'
 
 import SectionsTable from "./widgets/SectionsTable.vue";
 import EditSectionForm from "./widgets/EditSectionForm.vue";
-import { useModal, useToast } from "vuestic-ui";
 
 const projectToEdit = ref(null);
 const doShowFotoclubFormModal = ref(false);
+const isLoading = ref(false)
+
+const sections = ref([])
+
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'section/get_all')
+  if (response){
+    sections.value = response.data.items
+    console.log(sections.value)
+  }
+})
 </script>
 
 <template>
@@ -19,7 +30,7 @@ const doShowFotoclubFormModal = ref(false);
       </div>
 
       <SectionsTable
-        :projects="projects"
+        :sections="sections"
         :loading="isLoading"
         @edit="editProject"
         @delete="onProjectDeleted"
