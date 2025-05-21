@@ -1,22 +1,11 @@
-<script setup lang="ts">
+<script setup>
 import { computed, ref, watch } from "vue";
-import { EmptyProject, Project } from "../types";
-import { SelectOption } from "vuestic-ui";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 import UserAvatar from "../../users/widgets/UserAvatar.vue";
-import { useUsersStore } from "../../../stores/users";
 
-const props = defineProps<{
-  project: Project | null;
-  saveButtonLabel: string;
-}>();
+const props = defineProps();
 
-defineEmits<{
-  (event: "save", project: Project): void;
-  (event: "close"): void;
-}>();
-
-const defaultNewProject: EmptyProject = {
+const defaultNewProject = {
   project_name: "",
   project_owner: undefined,
   team: [],
@@ -32,8 +21,8 @@ const isFormHasUnsavedChanges = computed(() => {
     }
 
     return (
-      newProject.value[key as keyof EmptyProject] !==
-      (props.project ?? defaultNewProject)?.[key as keyof EmptyProject]
+      newProject.value[key] !==
+      (props.project ?? defaultNewProject)?.[key]
     );
   });
 });
@@ -59,7 +48,7 @@ watch(
   { immediate: true },
 );
 
-const required = (v: string | SelectOption) => !!v || "This field is required";
+const required = (v) => !!v || "This field is required";
 
 const ownerFiltersSearch = ref("");
 const teamFiltersSearch = ref("");
@@ -99,7 +88,7 @@ const teamFiltersSearch = ref("");
       value-by="id"
       multiple
       :rules="[
-        (v: any) => ('length' in v && v.length > 0) || 'This field is required',
+        (v) => ('length' in v && v.length > 0) || 'This field is required',
       ]"
       :options="usersStore.items"
       :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
@@ -138,7 +127,7 @@ const teamFiltersSearch = ref("");
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
         >Cancel</VaButton
       >
-      <VaButton @click="validate() && $emit('save', newProject as Project)">{{
+      <VaButton @click="validate() && $emit('save', newProject)">{{
         saveButtonLabel
       }}</VaButton>
     </div>
