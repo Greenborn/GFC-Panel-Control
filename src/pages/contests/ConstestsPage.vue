@@ -2,6 +2,7 @@
 import { ref, onMounted } from "vue";
 import ContestsTable from "./widgets/ContestsTable.vue";
 import EditConstestForm from "./widgets/EditConstestForm.vue";
+import { fechaDateToString } from "../../helpers/utils";
 
 import axios from 'axios'
 
@@ -14,9 +15,20 @@ onMounted(async () => {
   let response = await axios.get(import.meta.env.VITE_API_URL+'contests/get_all')
   if (response){
     contests.value = response.data.items
-    console.log(contests.value)
+    for (let i=0; i<contests.value.length; i++){
+      const ITEM = contests.value[i]
+      ITEM.start_date = fechaDateToString(new Date(ITEM.start_date), '-')
+      ITEM.end_date   = fechaDateToString(new Date(ITEM.end_date), '-')
+    }
+
+    contests.value.sort((a, b) => b.id - a.id)
   }
 })
+
+function agregarConcurso(){
+  alert("En desarrollo")
+}
+
 </script>
 
 <template>
@@ -25,7 +37,7 @@ onMounted(async () => {
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewProject">Concurso</VaButton>
+        <VaButton icon="add" @click="agregarConcurso">Concurso</VaButton>
       </div>
 
       <ContestsTable

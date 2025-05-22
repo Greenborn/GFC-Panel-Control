@@ -15,9 +15,16 @@ onMounted(async () => {
   let response = await axios.get(import.meta.env.VITE_API_URL+'category/get_all')
   if (response){
     categories.value = response.data.items
-    console.log(categories.value)
+    for (let i=0; i<categories.value.length; i++){
+      const ITEM = categories.value[i]
+      ITEM.mostrar_en_ranking = ITEM.mostrar_en_ranking ? 'Si' : 'No'
+    }
   }
 })
+
+function createNew() {
+  alert("En desarrollo")
+}
 </script>
 
 <template>
@@ -27,7 +34,7 @@ onMounted(async () => {
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
         
-        <VaButton icon="add" @click="createNewProject">Categoria</VaButton>
+        <VaButton icon="add" @click="createNew">Categoria</VaButton>
       </div>
 
       
