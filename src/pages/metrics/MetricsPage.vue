@@ -1,80 +1,23 @@
-<script setup lang="ts">
-import { ref  } from "vue";
-import ProjectTable from "./widgets/ProjectsTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
-import { useModal, useToast } from "vuestic-ui";
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from 'axios'
 
+import MetricTable from "./widgets/MetricsTable.vue";
+import EditMetricForm from "./widgets/EditMetricForm.vue";
 
 const projectToEdit = ref(null);
-const doShowProjectFormModal = ref(false);
+const doShowFotoclubFormModal = ref(false);
 
-const editProject = (project) => {
-  projectToEdit.value = project;
-  doShowProjectFormModal.value = true;
-};
+const metrics = ref([])
+const isLoading = ref(false)
 
-const createNewProject = () => {
-  projectToEdit.value = null;
-  doShowProjectFormModal.value = true;
-};
-
-const { init: notify } = useToast();
-
-const onProjectSaved = async (project) => {
-  doShowProjectFormModal.value = false;
-  if ("id" in project) {
-    await update(project);
-    notify({
-      message: "Project updated",
-      color: "success",
-    });
-  } else {
-    await add(project );
-    notify({
-      message: "Project created",
-      color: "success",
-    });
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'metric/get_all')
+  if (response){
+    metrics.value = response.data.items
+    console.log(metrics.value)
   }
-};
-
-const { confirm } = useModal();
-
-const onProjectDeleted = async (project) => {
-  const response = await confirm({
-    title: "Delete project",
-    message: `Are you sure you want to delete project "${project.project_name}"?`,
-    okText: "Delete",
-    size: "small",
-    maxWidth: "380px",
-  });
-
-  if (!response) {
-    return;
-  }
-
-  await remove(project);
-  notify({
-    message: "Project deleted",
-    color: "success",
-  });
-};
-
-const editFormRef = ref();
-
-const beforeEditFormModalClose = async (hide: () => unknown) => {
-  if (editFormRef.value.isFormHasUnsavedChanges) {
-    const agreed = await confirm({
-      maxWidth: "380px",
-      message: "Form has unsaved changes. Are you sure you want to close it?",
-      size: "small",
-    });
-    if (agreed) {
-      hide();
-    }
-  } else {
-    hide();
-  }
-};
+})
 </script>
 
 <template>
@@ -86,8 +29,8 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
         <VaButton icon="add" @click="createNewProject">Métrica</VaButton>
       </div>
 
-      <ProjectTable
-        :projects="projects"
+      <MetricTable
+        :metrics="metrics"
         :loading="isLoading"
         @edit="editProject"
         @delete="onProjectDeleted"
@@ -106,7 +49,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditMetricForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"

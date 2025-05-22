@@ -3,17 +3,23 @@ import { defineVaDataTableColumns } from "vuestic-ui";
 import UserAvatar from "../../users/widgets/UserAvatar.vue";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 const columns = defineVaDataTableColumns([
+  { label: " ", key: "actions" },
+  { label: "ID", key: "id", sortable: true },
+  { label: "Nombre", key: "name", sortable: true },
+  { label: "Inicio Inscripcion", key: "start_date", sortable: true },
+  { label: "Fin Inscripcion", key: "end_date", sortable: true },
+  { label: "Sub titulo", key: "sub_title", sortable: true },
+  { label: "Descripcion", key: "description", sortable: true },
 ]);
 
-const props = defineProps({
-});
+const props = defineProps(["contests", "loading"]);
 
 </script>
 
 <template>
   <div>
     <VaDataTable
-      :items="projects"
+      :items="contests"
       :columns="columns"
       :loading="loading"
     >
