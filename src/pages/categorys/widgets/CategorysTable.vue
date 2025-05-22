@@ -3,11 +3,8 @@ import { defineVaDataTableColumns } from "vuestic-ui";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 
 const columns = defineVaDataTableColumns([
-  { label: "Project name", key: "project_name", sortable: true },
-  { label: "Project owner", key: "project_owner", sortable: true },
-  { label: "Team", key: "team", sortable: true },
-  { label: "Status", key: "status", sortable: true },
-  { label: "Creation Date", key: "created_at", sortable: true },
+  { label: "Categoría", key: "name", sortable: true },
+  { label: "Mostrar en Ranking", key: "mostrar_en_ranking", sortable: true },
   { label: " ", key: "actions" },
 ]);
 
@@ -22,33 +19,6 @@ const props = defineProps(["categories", "loading"]);
       :columns="columns"
       :loading="loading"
     >
-      <template #cell(project_name)="{ rowData }">
-        <div class="ellipsis max-w-[230px] lg:max-w-[450px]">
-          {{ rowData.project_name }}
-        </div>
-      </template>
-      <template #cell(project_owner)="{ rowData }">
-        <div
-          v-if="getUserById(rowData.project_owner)"
-          class="flex items-center gap-2 ellipsis max-w-[230px]"
-        >
-          {{ getUserById(rowData.project_owner).fullname }}
-        </div>
-      </template>
-      <template #cell(team)="{ rowData: project }">
-        <VaAvatarGroup
-          size="small"
-          :options="getTeamOptions(project.team)"
-          :max="5"
-        />
-      </template>
-      <template #cell(status)="{ rowData: project }">
-        <ProjectStatusBadge :status="project.status" />
-      </template>
-
-      <template #cell(created_at)="{ rowData: project }">
-        {{ new Date(project.created_at).toLocaleDateString() }}
-      </template>
 
       <template #cell(actions)="{ rowData: project }">
         <div class="flex gap-2 justify-end">
