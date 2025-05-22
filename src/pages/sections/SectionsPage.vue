@@ -18,6 +18,10 @@ onMounted(async () => {
     console.log(sections.value)
   }
 })
+
+function crearNueva(){
+  alert("En desarrollo")
+}
 </script>
 
 <template>
@@ -26,7 +30,7 @@ onMounted(async () => {
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewProject">Sección</VaButton>
+        <VaButton icon="add" @click="crearNueva">Sección</VaButton>
       </div>
 
       <SectionsTable
