@@ -10,7 +10,8 @@ import { get_dictionary_from_array } from "../../helpers/utils";
 const doShowEditUserModal = ref(false);
 const userToEdit = ref(null);
 
-const showEditUserModal = (user) => {
+function showEditUserModal(user) {
+  console.log("user", user);
   userToEdit.value = user;
   doShowEditUserModal.value = true;
 };
@@ -63,13 +64,14 @@ onMounted(async () => {
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">+ Agregar</VaButton>
+        <!--<VaButton @click="showAddUserModal">+ Agregar</VaButton>-->
 
       </div>
 
       <UsersTable
         :users="users"
         :loading="isLoading"
+        @editModal="showEditUserModal"
       />
     </VaCardContent>
   </VaCard>

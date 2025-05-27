@@ -15,6 +15,7 @@ const columns = defineVaDataTableColumns([
 ]);
 
 const props = defineProps(["users", "loading"])
+const emit  = defineEmits(['editModal'])
 
 const roleColors = {
   admin: "danger",
@@ -22,8 +23,8 @@ const roleColors = {
   owner: "warning",
 };
 
-function en_desarrollo(){
-  alert("En desarrollo")
+function edit( data ){
+  emit('editModal', data) 
 }
 
 const { confirm } = useModal();
@@ -43,7 +44,7 @@ const { confirm } = useModal();
           size="small"
           icon="mso-edit"
           aria-label="Edit user"
-          @click="en_desarrollo"
+          @click="edit(rowData)"
         />
         <VaButton
           preset="primary"

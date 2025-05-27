@@ -55,7 +55,6 @@ watch(avatar, (newAvatar) => {
 });
 
 const form = useForm("add-user-form");
-
 const emit = defineEmits(["close", "save"]);
 
 const onSave = () => {
