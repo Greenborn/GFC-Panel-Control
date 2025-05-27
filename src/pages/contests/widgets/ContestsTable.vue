@@ -1,6 +1,7 @@
 <script setup>
-import { defineVaDataTableColumns } from "vuestic-ui";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+import { defineVaDataTableColumns } from "vuestic-ui"
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
+
 const columns = defineVaDataTableColumns([
   { label: " ", key: "actions" },
   { label: "ID", key: "id", sortable: true },
@@ -12,7 +13,7 @@ const columns = defineVaDataTableColumns([
 ]);
 
 const props = defineProps(["contests", "loading"]);
-
+const emit  = defineEmits(['edit'])
 </script>
 
 <template>
@@ -22,26 +23,26 @@ const props = defineProps(["contests", "loading"]);
       :columns="columns"
       :loading="loading"
     >
-      <template #cell(project_name)="{ rowData }">
+      <template #cell(contest_name)="{ rowData }">
         <div class="ellipsis max-w-[230px] lg:max-w-[450px]">
-          {{ rowData.project_name }}
+          {{ rowData.contest_name }}
         </div>
       </template>
-      <template #cell(project_owner)="{ rowData }">
+      <template #cell(contest_owner)="{ rowData }">
       </template>
       <template #cell(team)="{ rowData }">
         <VaAvatarGroup
           size="small"
-          :options="getTeamOptions(project.team)"
+          :options="getTeamOptions(contest.team)"
           :max="5"
         />
       </template>
       <template #cell(status)="{ rowData }">
-        <ProjectStatusBadge :status="project.status" />
+        <ProjectStatusBadge :status="contest.status" />
       </template>
 
       <template #cell(created_at)="{ rowData }">
-        {{ new Date(project.created_at).toLocaleDateString() }}
+        {{ new Date(contest.created_at).toLocaleDateString() }}
       </template>
 
       <template #cell(actions)="{ rowData }">
@@ -51,16 +52,16 @@ const props = defineProps(["contests", "loading"]);
             size="small"
             color="primary"
             icon="mso-edit"
-            aria-label="Edit project"
-            @click="$emit('edit', project)"
+            aria-label="Edit contest"
+            @click="$emit('edit', contest)"
           />
           <VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
-            aria-label="Delete project"
-            @click="$emit('delete', project)"
+            aria-label="Delete contest"
+            @click="$emit('delete', contest)"
           />
         </div>
       </template>
