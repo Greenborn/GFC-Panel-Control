@@ -8,10 +8,9 @@ const props = defineProps(["user"]);
 
 const defaultNewUser = {
   avatar: "",
-  fullname: "",
-  role: "user",
+  name: "", last_name: "",
+  role: "3",
   username: "",
-  notes: "",
   email: "",
   active: true,
 }
@@ -37,9 +36,10 @@ function onSave(){
 }
 
 const roleSelectOptions = [
-  { text: "Admin", value: "admin" },
-  { text: "User", value: "user" },
-  { text: "Owner", value: "owner" },
+  { text: "Administrador", value: "1" },
+  { text: "Delegado", value: "2" },
+  { text: "Concursante", value: "3" },
+  { text: "Juez", value: "4" }
 ]
 </script>
 
@@ -56,7 +56,7 @@ const roleSelectOptions = [
       class="self-stretch justify-start items-center gap-4 inline-flex"
     >
       <UserAvatar :user="newUser" size="large" />
-      <VaButton preset="primary" size="small">Add image</VaButton>
+      <VaButton preset="primary" size="small">Elegir Imagen</VaButton>
       <VaButton
         v-if="avatar"
         preset="primary"
@@ -70,21 +70,12 @@ const roleSelectOptions = [
     <div class="self-stretch flex-col justify-start items-start gap-4 flex">
       <div class="flex gap-4 flex-col sm:flex-row w-full">
         <VaInput
-          v-model="newUser.fullname"
-          label="Full name"
+          v-model="newUser.username"
+          label="Nombre de usuario"
           class="w-full sm:w-1/2"
           :rules="[validators.required]"
           name="fullName"
         />
-        <VaInput
-          v-model="newUser.username"
-          label="Username"
-          class="w-full sm:w-1/2"
-          :rules="[validators.required]"
-          name="username"
-        />
-      </div>
-      <div class="flex gap-4 flex-col sm:flex-row w-full">
         <VaInput
           v-model="newUser.email"
           label="Email"
@@ -92,17 +83,22 @@ const roleSelectOptions = [
           :rules="[validators.required, validators.email]"
           name="email"
         />
-        <VaSelect
-          v-model="newUser.projects"
-          label="Projects"
+        
+      </div>
+      <div class="flex gap-4 flex-col sm:flex-row w-full">
+        <VaInput
+          v-model="newUser.name"
+          label="Nombre"
           class="w-full sm:w-1/2"
-          :options="projects"
-          value-by="id"
-          text-by="project_name"
           :rules="[validators.required]"
-          name="projects"
-          multiple
-          :max-visible-options="2"
+          name="name"
+        />
+        <VaInput
+          v-model="newUser.last_name"
+          label="Apellido"
+          class="w-full sm:w-1/2"
+          :rules="[validators.required]"
+          name="last_name"
         />
       </div>
 
