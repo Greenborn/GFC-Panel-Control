@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineVaDataTableColumns } from "vuestic-ui";
-import UserAvatar from "../../../users/widgets/UserAvatar.vue";
 import ProjectStatusBadge from "../../../contests/components/ProjectStatusBadge.vue";
 import { useProjects } from "../../../contests/composables/useProjects";
 import { Pagination } from "../../../../data/pages/projects";
@@ -45,11 +44,6 @@ const { getTeamOptions, getUserById } = useProjectUsers();
           </template>
           <template #cell(project_owner)="{ rowData }">
             <div class="flex items-center gap-2 ellipsis max-w-[230px]">
-              <UserAvatar
-                v-if="getUserById(rowData.project_owner)"
-                :user="getUserById(rowData.project_owner)!"
-                size="small"
-              />
               {{ getUserById(rowData.project_owner)?.fullname }}
             </div>
           </template>
