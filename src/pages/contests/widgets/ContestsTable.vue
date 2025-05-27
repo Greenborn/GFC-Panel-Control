@@ -1,6 +1,5 @@
 <script setup>
 import { defineVaDataTableColumns } from "vuestic-ui";
-import UserAvatar from "../../users/widgets/UserAvatar.vue";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 const columns = defineVaDataTableColumns([
   { label: " ", key: "actions" },
@@ -29,30 +28,23 @@ const props = defineProps(["contests", "loading"]);
         </div>
       </template>
       <template #cell(project_owner)="{ rowData }">
-        <div
-          v-if="getUserById(rowData.project_owner)"
-          class="flex items-center gap-2 ellipsis max-w-[230px]"
-        >
-          <UserAvatar :user="getUserById(rowData.project_owner)" size="small" />
-          {{ getUserById(rowData.project_owner).fullname }}
-        </div>
       </template>
-      <template #cell(team)="{ rowData: project }">
+      <template #cell(team)="{ rowData }">
         <VaAvatarGroup
           size="small"
           :options="getTeamOptions(project.team)"
           :max="5"
         />
       </template>
-      <template #cell(status)="{ rowData: project }">
+      <template #cell(status)="{ rowData }">
         <ProjectStatusBadge :status="project.status" />
       </template>
 
-      <template #cell(created_at)="{ rowData: project }">
+      <template #cell(created_at)="{ rowData }">
         {{ new Date(project.created_at).toLocaleDateString() }}
       </template>
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
