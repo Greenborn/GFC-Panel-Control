@@ -1,7 +1,6 @@
 <script setup>
 import { computed, ref, watch } from "vue";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
-import UserAvatar from "../../users/widgets/UserAvatar.vue";
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
 const props = defineProps();
 
@@ -72,12 +71,6 @@ const teamFiltersSearch = ref("");
       :rules="[required]"
       :options="usersStore.items"
     >
-      <template #content="{ value: user }">
-        <div v-if="user" :key="user.id" class="flex items-center gap-1 mr-4">
-          <UserAvatar v-if="false" :user="user" size="18px" />
-          {{ user.fullname }}
-        </div>
-      </template>
     </VaSelect>
     <VaSelect
       v-model="newProject.team"
@@ -93,18 +86,6 @@ const teamFiltersSearch = ref("");
       :options="usersStore.items"
       :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
     >
-      <template #content="{ valueArray }">
-        <template v-if="valueArray?.length">
-          <div
-            v-for="(user, index) in valueArray"
-            :key="user.id"
-            class="flex items-center gap-1 mr-2"
-          >
-            <UserAvatar v-if="user" :user="user" size="18px" />
-            {{ user.fullname }}{{ index < valueArray.length - 1 ? "," : "" }}
-          </div>
-        </template>
-      </template>
     </VaSelect>
     <VaSelect
       v-model="newProject.status"
