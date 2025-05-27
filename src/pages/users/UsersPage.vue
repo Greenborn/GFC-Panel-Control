@@ -85,7 +85,7 @@ onMounted(async () => {
     hide-default-actions
     :before-cancel="beforeEditFormModalClose"
   >
-    <h1 class="va-h5">{{ userToEdit ? "Edit user" : "Add user" }}</h1>
+    <h1 class="va-h5">{{ userToEdit ? "Editar Usuario" : "Nuevo Usuario" }}</h1>
     <EditUserForm
       ref="editFormRef"
       :user="userToEdit"

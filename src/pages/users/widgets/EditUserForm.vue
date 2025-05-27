@@ -1,21 +1,12 @@
-<script setup lang="ts">
-import { PropType, computed, ref, watch } from "vue";
+<script setup>
+import { computed, ref, watch } from "vue";
 import { useForm } from "vuestic-ui";
 import UserAvatar from "./UserAvatar.vue";
 import { validators } from "../../../services/utils";
 
-const props = defineProps({
-  user: {
-    type: Object as PropType<User | null>,
-    default: null,
-  },
-  saveButtonLabel: {
-    type: String,
-    default: "Save",
-  },
-});
+const props = defineProps(["user"]);
 
-const defaultNewUser: Omit<User, "id"> = {
+const defaultNewUser = {
   avatar: "",
   fullname: "",
   role: "user",
@@ -23,54 +14,33 @@ const defaultNewUser: Omit<User, "id"> = {
   notes: "",
   email: "",
   active: true,
-};
+}
 
-const newUser = ref<User>({ ...defaultNewUser } as User);
+const newUser = ref({ ...defaultNewUser });
+const avatar = ref();
 
-const isFormHasUnsavedChanges = computed(() => {
-  return Object.keys(newUser.value).some((key) => {
-    if (key === "avatar") {
-      return false;
-    }
-
-    return (
-      newUser.value[key as keyof Omit<User, "id">] !==
-      (props.user ?? defaultNewUser)?.[key as keyof Omit<User, "id">]
-    );
-  });
-});
-
-defineExpose({
-  isFormHasUnsavedChanges,
-});
-
-const avatar = ref<File>();
-
-const makeAvatarBlobUrl = (avatar: File) => {
+const makeAvatarBlobUrl = (avatar) => {
   return URL.createObjectURL(avatar);
-};
+}
 
 watch(avatar, (newAvatar) => {
   newUser.value.avatar = newAvatar ? makeAvatarBlobUrl(newAvatar) : "";
-});
+})
 
 const form = useForm("add-user-form");
 const emit = defineEmits(["close", "save"]);
 
-const onSave = () => {
+function onSave(){
   if (form.validate()) {
     emit("save", newUser.value);
   }
-};
+}
 
-const roleSelectOptions: {
-  text: Capitalize<Lowercase<UserRole>>;
-  value: UserRole;
-}[] = [
+const roleSelectOptions = [
   { text: "Admin", value: "admin" },
   { text: "User", value: "user" },
   { text: "Owner", value: "owner" },
-];
+]
 </script>
 
 <template>
@@ -169,11 +139,9 @@ const roleSelectOptions: {
         class="flex gap-2 flex-col-reverse items-stretch justify-end w-full sm:flex-row sm:items-center"
       >
         <VaButton preset="secondary" color="secondary" @click="$emit('close')"
-          >Cancel</VaButton
+          >Cancelar</VaButton
         >
-        <VaButton :disabled="!isValid" @click="onSave">{{
-          saveButtonLabel
-        }}</VaButton>
+        <VaButton :disabled="!isValid" @click="onSave">Guardar</VaButton>
       </div>
     </div>
   </VaForm>
