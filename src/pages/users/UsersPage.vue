@@ -8,7 +8,6 @@ import axios from 'axios';
 import { get_dictionary_from_array } from "../../helpers/utils";
 
 const doShowEditUserModal = ref(false);
-
 const userToEdit = ref(null);
 
 const showEditUserModal = (user) => {
@@ -16,10 +15,10 @@ const showEditUserModal = (user) => {
   doShowEditUserModal.value = true;
 };
 
-const showAddUserModal = () => {
+function showAddUserModal() {
   userToEdit.value = null;
   doShowEditUserModal.value = true;
-};
+}
 
 const users = ref([]);
 
@@ -45,7 +44,6 @@ onMounted(async () => {
     }
     
     users.value = aux
-    console.log(aux)
   }
 })
 
@@ -65,7 +63,7 @@ onMounted(async () => {
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">Agregar</VaButton>
+        <VaButton @click="showAddUserModal">+ Agregar</VaButton>
 
       </div>
 

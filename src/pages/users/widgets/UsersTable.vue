@@ -5,13 +5,13 @@ import { ref } from "vue";
 import { useVModel } from "@vueuse/core";
 
 const columns = defineVaDataTableColumns([
-  { label: "ID", key: "id", sortable: true },
+  { label: " ", key: "actions" },
   { label: "Nombre Usuario", key: "username", sortable: true },
   { label: "Nombres", key: "name", sortable: true },
   { label: "Apellidos", key: "last_name", sortable: true },
   { label: "Fotoclub / Agrupación", key: "fotoclub_name", sortable: true },
   { label: "Rol", key: "rol_name", sortable: true },
-  { label: " ", key: "actions" },
+  { label: "ID", key: "id", sortable: true },
 ]);
 
 const props = defineProps(["users", "loading"])

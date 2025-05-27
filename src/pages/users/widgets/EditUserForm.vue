@@ -23,14 +23,13 @@ const defaultNewUser: Omit<User, "id"> = {
   notes: "",
   email: "",
   active: true,
-  projects: [],
 };
 
 const newUser = ref<User>({ ...defaultNewUser } as User);
 
 const isFormHasUnsavedChanges = computed(() => {
   return Object.keys(newUser.value).some((key) => {
-    if (key === "avatar" || key === "projects") {
+    if (key === "avatar") {
       return false;
     }
 
@@ -44,28 +43,6 @@ const isFormHasUnsavedChanges = computed(() => {
 defineExpose({
   isFormHasUnsavedChanges,
 });
-
-const { projects } = useProjects({
-  pagination: ref({ page: 1, perPage: 9999, total: 10 }),
-});
-
-watch(
-  [() => props.user, projects],
-  () => {
-    if (!props.user) {
-      return;
-    }
-
-    newUser.value = {
-      ...props.user,
-      projects: props.user.projects.filter((projectId) =>
-        projects.value.find(({ id }) => id === projectId),
-      ),
-      avatar: props.user.avatar || "",
-    };
-  },
-  { immediate: true },
-);
 
 const avatar = ref<File>();
 
