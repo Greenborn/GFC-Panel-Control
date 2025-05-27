@@ -37,7 +37,7 @@ function agregarConcurso(){
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="agregarConcurso">Concurso</VaButton>
+        <!--<VaButton icon="add" @click="agregarConcurso">Concurso</VaButton>-->
       </div>
 
       <ContestsTable
