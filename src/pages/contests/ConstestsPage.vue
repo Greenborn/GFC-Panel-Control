@@ -6,8 +6,8 @@ import { fechaDateToString } from "../../helpers/utils";
 
 import axios from 'axios'
 
-const projectToEdit = ref(null);
-const doShowProjectFormModal = ref(false);
+const contestToEdit = ref(null);
+const doShowFormModal = ref(false);
 
 const contests = ref([])
 
@@ -29,6 +29,11 @@ function agregarConcurso(){
   alert("En desarrollo")
 }
 
+function showEditModal(data) {
+  contestToEdit.value = data
+  doShowFormModal.value = true
+}
+
 </script>
 
 <template>
@@ -43,14 +48,14 @@ function agregarConcurso(){
       <ContestsTable
         :contests="contests"
         :loading="isLoading"
-        @edit=""
+        @edit="showEditModal"
         @delete=""
       />
     </VaCardContent>
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowProjectFormModal"
+      v-model="doShowFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -58,19 +63,11 @@ function agregarConcurso(){
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
-      <h1 v-else class="va-h5 mb-4">Edit project</h1>
+      <h1 v-if="contestToEdit === null" class="va-h5 mb-4">Guardar</h1>
+      <h1 v-else class="va-h5 mb-4">Editar</h1>
       <EditConstestForm
         ref="editFormRef"
-        :project="projectToEdit"
-        :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
-        @close="cancel"
-        @save="
-          (project) => {
-            onProjectSaved(project);
-            ok();
-          }
-        "
+        :contest="contestToEdit"
       />
     </VaModal>
   </VaCard>
