@@ -2,15 +2,9 @@
 import { defineVaDataTableColumns } from "vuestic-ui";
 
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+import { FIELDS_FC } from "../const.js";
 
-const columns = defineVaDataTableColumns([
-  { label: "Nombre",      key: "name", sortable: true },
-  { label: "Descripcion", key: "description", sortable: true },
-  { label: "Facebook",    key: "facebook", sortable: true },
-  { label: "Instagram",   key: "instagram", sortable: true },
-  { label: "Email",       key: "email", sortable: true },
-  { label: " ",           key: "actions" },
-]);
+const columns = defineVaDataTableColumns(FIELDS_FC);
 
 const props = defineProps([ 'data', 'loading' ]);
 const emit  = defineEmits(['edit', 'delete'])
@@ -26,52 +20,32 @@ const emit  = defineEmits(['edit', 'delete'])
       :columns="columns"
       :loading="loading"
     >
-      <template #cell(project_name)="{ rowData }">
-        <div class="ellipsis max-w-[230px] lg:max-w-[450px]">
-          {{ rowData.project_name }}
-        </div>
-      </template>
-      <template #cell(project_owner)="{ rowData }">
-        <div
-          v-if="getUserById(rowData.project_owner)"
-          class="flex items-center gap-2 ellipsis max-w-[230px]"
-        >
-          {{ getUserById(rowData.project_owner).fullname }}
-        </div>
-      </template>
-      <template #cell(team)="{ rowData: project }">
-        <VaAvatarGroup
-          size="small"
-          :options="getTeamOptions(project.team)"
-          :max="5"
-        />
-      </template>
-      <template #cell(status)="{ rowData: project }">
+      <template #cell(status)="{ rowData }">
         <ProjectStatusBadge :status="project.status" />
       </template>
 
-      <template #cell(created_at)="{ rowData: project }">
+      <template #cell(created_at)="{ rowData }">
         {{ new Date(project.created_at).toLocaleDateString() }}
       </template>
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
             size="small"
             color="primary"
             icon="mso-edit"
-            aria-label="Edit project"
-            @click="$emit('edit', project )"
+            aria-label="Editar Fotoclub"
+            @click="$emit('edit', rowData )"
           />
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
-            aria-label="Delete project"
+            aria-label="Eliminar Fotoclub"
             @click="$emit('delete', project )"
-          />
+          />-->
         </div>
       </template>
     </VaDataTable>
