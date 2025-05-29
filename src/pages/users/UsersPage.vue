@@ -4,31 +4,47 @@ import UsersTable from "./widgets/UsersTable.vue";
 import EditUserForm from "./widgets/EditUserForm.vue";
 import { useModal, useToast } from "vuestic-ui";
 import axios from 'axios';
-//import { useProjects } from "../projects/composables/useProjects";
+
+import { get_dictionary_from_array } from "../../helpers/utils";
 
 const doShowEditUserModal = ref(false);
-
-//const { projects } = useProjects();
-
 const userToEdit = ref(null);
 
-const showEditUserModal = (user) => {
+function showEditUserModal(user) {
+  console.log("user", user);
   userToEdit.value = user;
   doShowEditUserModal.value = true;
 };
 
-const showAddUserModal = () => {
+function showAddUserModal() {
   userToEdit.value = null;
   doShowEditUserModal.value = true;
-};
+}
 
 const users = ref([]);
 
 onMounted(async () => {
   let response = await axios.get(import.meta.env.VITE_API_URL+'users/get_all')
   if (response){
-    users.value = response.data.items
-    console.log(users.value)
+    let aux = []
+    let diccio_profile  = get_dictionary_from_array(response.data.profile, 'id', 'object')
+    let fotoclub_diccio = get_dictionary_from_array(response.data.fotoclub, 'id', 'object')
+    let diccio_roles = get_dictionary_from_array(response.data.role, 'id', 'object')
+    for (let i=0; i<response.data.items.length; i++){
+      const USER     = response.data.items[i]
+      const PROFILE  = diccio_profile[ USER.profile_id ]
+      const FOTOCLUB = fotoclub_diccio[ PROFILE.fotoclub_id ]
+      const ROL      = diccio_roles[ USER.role_id ]
+      let item = {
+        ...USER,
+        ...PROFILE,
+        fotoclub_name: FOTOCLUB?.name,
+        rol_name: diccio_roles[USER.role_id]?.type
+      }
+      aux.push(item)
+    }
+    
+    users.value = aux
   }
 })
 
@@ -48,13 +64,14 @@ onMounted(async () => {
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">Agregar</VaButton>
+        <!--<VaButton @click="showAddUserModal">+ Agregar</VaButton>-->
 
       </div>
 
       <UsersTable
         :users="users"
         :loading="isLoading"
+        @editModal="showEditUserModal"
       />
     </VaCardContent>
   </VaCard>
@@ -68,11 +85,10 @@ onMounted(async () => {
     hide-default-actions
     :before-cancel="beforeEditFormModalClose"
   >
-    <h1 class="va-h5">{{ userToEdit ? "Edit user" : "Add user" }}</h1>
+    <h1 class="va-h5">{{ userToEdit ? "Editar Usuario - " + userToEdit.name + " " + userToEdit.last_name : "Nuevo Usuario" }}</h1>
     <EditUserForm
       ref="editFormRef"
       :user="userToEdit"
-      :save-button-label="userToEdit ? 'Save' : 'Add'"
       @close="cancel"
       @save="
         (user) => {

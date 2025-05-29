@@ -5,17 +5,27 @@ import { ref } from "vue";
 import { useVModel } from "@vueuse/core";
 
 const columns = defineVaDataTableColumns([
+  { label: " ", key: "actions" },
+  { label: "Nombre Usuario", key: "username", sortable: true },
+  { label: "Nombres", key: "name", sortable: true },
+  { label: "Apellidos", key: "last_name", sortable: true },
+  { label: "Fotoclub / Agrupación", key: "fotoclub_name", sortable: true },
+  { label: "Rol", key: "rol_name", sortable: true },
+  { label: "ID", key: "id", sortable: true },
 ]);
 
-const props = defineProps([
-  "users",
-  "loading"]);
+const props = defineProps(["users", "loading"])
+const emit  = defineEmits(['editModal'])
 
 const roleColors = {
   admin: "danger",
   user: "background-element",
   owner: "warning",
 };
+
+function edit( data ){
+  emit('editModal', data) 
+}
 
 const { confirm } = useModal();
 </script>
@@ -26,37 +36,6 @@ const { confirm } = useModal();
     :items="users"
     :loading="$props.loading"
   >
-    <template #cell(fullname)="{ rowData }">
-      <div class="flex items-center gap-2 max-w-[230px] ellipsis">
-        <UserAvatar :user="rowData" size="small" />
-        {{ rowData.fullname }}
-      </div>
-    </template>
-
-    <template #cell(username)="{ rowData }">
-      <div class="max-w-[120px] ellipsis">
-        {{ rowData.username }}
-      </div>
-    </template>
-
-    <template #cell(email)="{ rowData }">
-      <div class="ellipsis max-w-[230px]">
-        {{ rowData.email }}
-      </div>
-    </template>
-
-    <template #cell(role)="{ rowData }">
-      <VaBadge
-        :text="rowData.role"
-        :color="roleColors[rowData.role]"
-      />
-    </template>
-
-    <template #cell(projects)="{ rowData }">
-      <div class="ellipsis max-w-[300px] lg:max-w-[450px]">
-        {{ rowData }}
-      </div>
-    </template>
 
     <template #cell(actions)="{ rowData }">
       <div class="flex gap-2 justify-end">
@@ -65,7 +44,7 @@ const { confirm } = useModal();
           size="small"
           icon="mso-edit"
           aria-label="Edit user"
-          @click=""
+          @click="edit(rowData)"
         />
         <VaButton
           preset="primary"
@@ -73,7 +52,7 @@ const { confirm } = useModal();
           icon="mso-delete"
           color="danger"
           aria-label="Delete user"
-          @click="onUserDelete(rowData)"
+          @click="en_desarrollo"
         />
       </div>
     </template>

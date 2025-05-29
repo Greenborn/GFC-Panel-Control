@@ -1,7 +1,8 @@
 <script setup>
-defineProps(["status"]);
 
-const badgeColorMap: Record<Project["status"], string> = {
+defineProps(['status']);
+
+const badgeColorMap = {
   "in progress": "primary",
   archived: "secondary",
   completed: "success",

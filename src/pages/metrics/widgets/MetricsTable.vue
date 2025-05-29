@@ -1,22 +1,22 @@
 <script setup>
-import { ref } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
-
-import ProjectStatusBadge from "../components/SectionStatusBadge.vue";
-import { useVModel } from "@vueuse/core";
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 
 const columns = defineVaDataTableColumns([
-  { label: "Sección", key: "name", sortable: true },
+  { label: "Premio", key: "prize", sortable: true },
+  { label: "Puntage", key: "score", sortable: true },
+  { label: "Tipo Concurso", key: "organization_type", sortable: true },
   { label: " ", key: "actions" },
 ]);
 
-const props   = defineProps(["sections", "loading"]);
+const props = defineProps(["metrics", "loading"]);
+
 </script>
 
 <template>
   <div>
     <VaDataTable
-      :items="sections"
+      :items="metrics"
       :columns="columns"
       :loading="loading"
     >
@@ -45,7 +45,7 @@ const props   = defineProps(["sections", "loading"]);
     <div
       class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2"
     >
-      
+     
     </div>
   </div>
 </template>

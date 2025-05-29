@@ -1,12 +1,27 @@
-<script setup lang="ts">
-import { ref } from "vue";
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from 'axios'
 
 import SectionsTable from "./widgets/SectionsTable.vue";
-import EditProjectForm from "./widgets/EditProjectForm.vue";
-import { useModal, useToast } from "vuestic-ui";
+import EditSectionForm from "./widgets/EditSectionForm.vue";
 
 const projectToEdit = ref(null);
 const doShowFotoclubFormModal = ref(false);
+const isLoading = ref(false)
+
+const sections = ref([])
+
+onMounted(async () => {
+  let response = await axios.get(import.meta.env.VITE_API_URL+'section/get_all')
+  if (response){
+    sections.value = response.data.items
+    console.log(sections.value)
+  }
+})
+
+function crearNueva(){
+  alert("En desarrollo")
+}
 </script>
 
 <template>
@@ -15,11 +30,11 @@ const doShowFotoclubFormModal = ref(false);
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewProject">Sección</VaButton>
+        <VaButton icon="add" @click="crearNueva">Sección</VaButton>
       </div>
 
       <SectionsTable
-        :projects="projects"
+        :sections="sections"
         :loading="isLoading"
         @edit="editProject"
         @delete="onProjectDeleted"
@@ -38,7 +53,7 @@ const doShowFotoclubFormModal = ref(false);
     >
       <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
-      <EditProjectForm
+      <EditSectionForm
         ref="editFormRef"
         :project="projectToEdit"
         :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
