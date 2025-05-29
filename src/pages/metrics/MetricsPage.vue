@@ -18,6 +18,10 @@ onMounted(async () => {
     console.log(metrics.value)
   }
 })
+
+function createNew(){
+  alert("En desarrollo")
+}
 </script>
 
 <template>
@@ -26,7 +30,7 @@ onMounted(async () => {
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewProject">Métrica</VaButton>
+        <VaButton icon="add" @click="createNew">Métrica</VaButton>
       </div>
 
       <MetricTable
