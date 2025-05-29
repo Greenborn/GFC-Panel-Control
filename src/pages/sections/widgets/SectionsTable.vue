@@ -2,15 +2,13 @@
 import { ref } from "vue";
 import { defineVaDataTableColumns } from "vuestic-ui";
 
+import { FLIEDS_SECTION } from "../const.js";
 import ProjectStatusBadge from "../components/SectionStatusBadge.vue";
-import { useVModel } from "@vueuse/core";
 
-const columns = defineVaDataTableColumns([
-  { label: "Sección", key: "name", sortable: true },
-  { label: " ", key: "actions" },
-]);
+const columns = defineVaDataTableColumns(FLIEDS_SECTION);
 
 const props   = defineProps(["sections", "loading"]);
+const emit    = defineEmits(['edit', 'delete'])
 </script>
 
 <template>
@@ -21,24 +19,24 @@ const props   = defineProps(["sections", "loading"]);
       :loading="loading"
     >
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
             size="small"
             color="primary"
             icon="mso-edit"
-            aria-label="Edit project"
-            @click="$emit('edit', project)"
+            aria-label="Editar Sección"
+            @click="$emit('edit', rowData)"
           />
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
-            aria-label="Delete project"
-            @click="$emit('delete', project)"
-          />
+            aria-label="Borrar Sección"
+            @click="$emit('delete', rowData)"
+          />-->
         </div>
       </template>
     </VaDataTable>

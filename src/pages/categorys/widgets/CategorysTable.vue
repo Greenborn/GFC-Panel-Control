@@ -1,15 +1,13 @@
-<script setup lang="ts">
-import { defineVaDataTableColumns } from "vuestic-ui";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+<script setup>
+import { defineVaDataTableColumns } from "vuestic-ui"
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
-const columns = defineVaDataTableColumns([
-  { label: "Categoría", key: "name", sortable: true },
-  { label: "Mostrar en Ranking", key: "mostrar_en_ranking", sortable: true },
-  { label: " ", key: "actions" },
-]);
+import { FIELDS_CATEGORY } from "../const.js"
 
-const props = defineProps(["categories", "loading"]);
+const columns = defineVaDataTableColumns(FIELDS_CATEGORY)
 
+const props = defineProps(["categories", "loading"])
+const emit  = defineEmits(['edit', 'delete'])
 </script>
 
 <template>
@@ -20,24 +18,24 @@ const props = defineProps(["categories", "loading"]);
       :loading="loading"
     >
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
             size="small"
             color="primary"
             icon="mso-edit"
-            aria-label="Edit project"
-            @click="$emit('edit', project as Project)"
+            aria-label="Editar Categoría"
+            @click="$emit('edit', rowData )"
           />
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
-            aria-label="Delete project"
-            @click="$emit('delete', project as Project)"
-          />
+            aria-label="Borrar Categoría"
+            @click="$emit('delete', rowData)"
+          />-->
         </div>
       </template>
     </VaDataTable>
