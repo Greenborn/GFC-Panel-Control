@@ -20,15 +20,15 @@ const emit  = defineEmits(['edit', 'delete'])
       :columns="columns"
       :loading="loading"
     >
-      <template #cell(status)="{ rowData: project }">
+      <template #cell(status)="{ rowData }">
         <ProjectStatusBadge :status="project.status" />
       </template>
 
-      <template #cell(created_at)="{ rowData: project }">
+      <template #cell(created_at)="{ rowData }">
         {{ new Date(project.created_at).toLocaleDateString() }}
       </template>
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
@@ -36,16 +36,16 @@ const emit  = defineEmits(['edit', 'delete'])
             color="primary"
             icon="mso-edit"
             aria-label="Editar Fotoclub"
-            @click="$emit('edit', project )"
+            @click="$emit('edit', rowData )"
           />
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
             aria-label="Eliminar Fotoclub"
             @click="$emit('delete', project )"
-          />
+          />-->
         </div>
       </template>
     </VaDataTable>

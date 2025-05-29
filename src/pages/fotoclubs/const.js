@@ -7,3 +7,11 @@ export const FIELDS_FC = [
     { label: "Instagram",   key: "instagram",   sortable: true },
     { label: "Email",       key: "email",       sortable: true }
 ]
+
+export const DEFAULT_FC = {
+    name: '',
+    description: '',
+    facebook: '',
+    instagram: '',
+    email: ''
+}
