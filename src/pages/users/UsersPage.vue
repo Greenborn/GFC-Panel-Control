@@ -8,18 +8,18 @@ import axios from 'axios';
 import { get_dictionary_from_array } from "../../helpers/utils";
 
 const doShowEditUserModal = ref(false);
-
 const userToEdit = ref(null);
 
-const showEditUserModal = (user) => {
+function showEditUserModal(user) {
+  console.log("user", user);
   userToEdit.value = user;
   doShowEditUserModal.value = true;
 };
 
-const showAddUserModal = () => {
+function showAddUserModal() {
   userToEdit.value = null;
   doShowEditUserModal.value = true;
-};
+}
 
 const users = ref([]);
 
@@ -45,7 +45,6 @@ onMounted(async () => {
     }
     
     users.value = aux
-    console.log(aux)
   }
 })
 
@@ -65,13 +64,14 @@ onMounted(async () => {
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">Agregar</VaButton>
+        <!--<VaButton @click="showAddUserModal">+ Agregar</VaButton>-->
 
       </div>
 
       <UsersTable
         :users="users"
         :loading="isLoading"
+        @editModal="showEditUserModal"
       />
     </VaCardContent>
   </VaCard>
@@ -85,11 +85,10 @@ onMounted(async () => {
     hide-default-actions
     :before-cancel="beforeEditFormModalClose"
   >
-    <h1 class="va-h5">{{ userToEdit ? "Edit user" : "Add user" }}</h1>
+    <h1 class="va-h5">{{ userToEdit ? "Editar Usuario - " + userToEdit.name + " " + userToEdit.last_name : "Nuevo Usuario" }}</h1>
     <EditUserForm
       ref="editFormRef"
       :user="userToEdit"
-      :save-button-label="userToEdit ? 'Save' : 'Add'"
       @close="cancel"
       @save="
         (user) => {
