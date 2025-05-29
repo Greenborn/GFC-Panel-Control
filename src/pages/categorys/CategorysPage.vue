@@ -25,6 +25,12 @@ onMounted(async () => {
 function createNew() {
   alert("En desarrollo")
 }
+
+function showEditModal(data) {
+  toEdit.value = data
+  doShowFormModal.value = true
+}
+
 </script>
 
 <template>
@@ -33,15 +39,13 @@ function createNew() {
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        
-        <VaButton icon="add" @click="createNew">Categoria</VaButton>
+        <!--<VaButton icon="add" @click="createNew">Categoria</VaButton>-->
       </div>
-
       
       <CategorysTable
         :categories="categories"
         :loading="isLoading"
-        @edit="editProject"
+        @edit="showEditModal"
         @delete="onProjectDeleted"
       />
     </VaCardContent>
@@ -56,12 +60,11 @@ function createNew() {
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="toEdit === null" class="va-h5 mb-4">Add project</h1>
-      <h1 v-else class="va-h5 mb-4">Edit project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Agregar Categoria</h1>
+      <h1 v-else class="va-h5 mb-4">Editar Categoría - {{ toEdit.name }}</h1>
       <EditCategoryForm
         ref="editFormRef"
-        :project="toEdit"
-        :save-button-label="toEdit === null ? 'Add' : 'Save'"
+        :category="toEdit"
         @close="cancel"
         @save="
           (project) => {

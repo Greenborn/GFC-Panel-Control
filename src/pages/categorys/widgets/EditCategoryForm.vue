@@ -1,9 +1,8 @@
-<script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { SelectOption } from "vuestic-ui";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+<script setup>
+import { ref } from "vue"
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
-const props = defineProps({});
+const props = defineProps(['category']);
 
 const defaultNewProject = {
   project_name: "",
@@ -12,86 +11,22 @@ const defaultNewProject = {
   status: undefined,
 };
 
-const newProject = ref({ ...defaultNewProject });
-
-const isFormHasUnsavedChanges = computed(() => {
-  return Object.keys(newProject.value).some((key) => {
-    if (key === "team") {
-      return false;
-    }
-
-    return (
-      newProject.value[key] !==
-      (props.project ?? defaultNewProject)?.[key]
-    );
-  });
-});
-
-defineExpose({
-  isFormHasUnsavedChanges,
-});
-
-
-watch(
-  () => props.project,
-  () => {
-    if (!props.project) {
-      return;
-    }
-
-    newProject.value = {
-      ...props.project,
-      project_owner: props.project.project_owner,
-    };
-  },
-  { immediate: true },
-);
+const newCategory = ref({ ...defaultNewProject });
 
 const required = (v) => !!v || "This field is required";
 
-const ownerFiltersSearch = ref("");
-const teamFiltersSearch = ref("");
 </script>
 
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     <VaInput
-      v-model="newProject.project_name"
+      v-model="newCategory.project_name"
       label="Project name"
       :rules="[required]"
     />
+    
     <VaSelect
-      v-model="newProject.project_owner"
-      v-model:search="ownerFiltersSearch"
-      searchable
-      label="Owner"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      :rules="[required]"
-      :options="usersStore.items"
-    >
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.team"
-      v-model:search="teamFiltersSearch"
-      label="Team"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      multiple
-      :rules="[
-        (v: any) => ('length' in v && v.length > 0) || 'This field is required',
-      ]"
-      :options="usersStore.items"
-      :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
-    >
-      <template #content="{ valueArray }">
-        
-      </template>
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.status"
+      v-model="newCategory.status"
       label="Status"
       :rules="[required]"
       track-by="value"
@@ -109,11 +44,8 @@ const teamFiltersSearch = ref("");
     </VaSelect>
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
-        >Cancel</VaButton
-      >
-      <VaButton @click="validate() && $emit('save', newProject as Project)">{{
-        saveButtonLabel
-      }}</VaButton>
+        >Cancelar</VaButton>
+      <VaButton @click="validate() && $emit('save', newCategory)">Guardar</VaButton>
     </div>
   </VaForm>
 </template>
