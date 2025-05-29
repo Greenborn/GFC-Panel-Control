@@ -25,7 +25,7 @@ onMounted(async () => {
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNewFotoclub">Fotoclub</VaButton>
+        <!--<VaButton icon="add" @click="createNewFotoclub">Fotoclub</VaButton>-->
       </div>
 
       <FotoclubTable
