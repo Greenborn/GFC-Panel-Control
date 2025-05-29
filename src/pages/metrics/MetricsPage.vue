@@ -5,7 +5,7 @@ import axios from 'axios'
 import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
 
-const projectToEdit = ref(null);
+const toEdit = ref(null);
 const doShowFotoclubFormModal = ref(false);
 
 const metrics = ref([])
@@ -43,7 +43,7 @@ function createNew(){
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowProjectFormModal"
+      v-model="doShowFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -51,12 +51,12 @@ function createNew(){
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
       <EditMetricForm
         ref="editFormRef"
-        :project="projectToEdit"
-        :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
+        :project="toEdit"
+        :save-button-label="toEdit === null ? 'Add' : 'Save'"
         @close="cancel"
         @save="
           (project) => {

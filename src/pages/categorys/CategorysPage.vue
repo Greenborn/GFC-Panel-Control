@@ -5,8 +5,8 @@ import axios from 'axios'
 import CategorysTable from "./widgets/CategorysTable.vue";
 import EditCategoryForm from "./widgets/EditCategoryForm.vue";
 
-const projectToEdit = ref(null);
-const doShowProjectFormModal = ref(false);
+const toEdit          = ref(null);
+const doShowFormModal = ref(false);
 
 const isLoading = ref(false)
 const categories = ref([])
@@ -48,7 +48,7 @@ function createNew() {
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowProjectFormModal"
+      v-model="doShowFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -56,12 +56,12 @@ function createNew() {
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Add project</h1>
       <h1 v-else class="va-h5 mb-4">Edit project</h1>
       <EditCategoryForm
         ref="editFormRef"
-        :project="projectToEdit"
-        :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
+        :project="toEdit"
+        :save-button-label="toEdit === null ? 'Add' : 'Save'"
         @close="cancel"
         @save="
           (project) => {
