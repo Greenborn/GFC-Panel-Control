@@ -1,56 +1,15 @@
 <script setup>
-import { computed, ref, watch } from "vue";
+import { ref } from "vue";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
-const props = defineProps();
+import { DEFAULT_METRIC } from "../const.js"
 
-const defaultNewProject = {
-  project_name: "",
-  project_owner: undefined,
-  team: [],
-  status: undefined,
-};
+const props = defineProps(["metric"])
 
-const newProject = ref({ ...defaultNewProject });
+const newProject = ref({ ...DEFAULT_METRIC })
 
-const isFormHasUnsavedChanges = computed(() => {
-  return Object.keys(newProject.value).some((key) => {
-    if (key === "team") {
-      return false;
-    }
+const required = (v) => !!v || "This field is required"
 
-    return (
-      newProject.value[key] !==
-      (props.project ?? defaultNewProject)?.[key]
-    );
-  });
-});
-
-defineExpose({
-  isFormHasUnsavedChanges,
-});
-
-const usersStore = useUsersStore();
-
-watch(
-  () => props.project,
-  () => {
-    if (!props.project) {
-      return;
-    }
-
-    newProject.value = {
-      ...props.project,
-      project_owner: props.project.project_owner,
-    };
-  },
-  { immediate: true },
-);
-
-const required = (v) => !!v || "This field is required";
-
-const ownerFiltersSearch = ref("");
-const teamFiltersSearch = ref("");
 </script>
 
 <template>
@@ -60,57 +19,12 @@ const teamFiltersSearch = ref("");
       label="Project name"
       :rules="[required]"
     />
-    <VaSelect
-      v-model="newProject.project_owner"
-      v-model:search="ownerFiltersSearch"
-      searchable
-      label="Owner"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      :rules="[required]"
-      :options="usersStore.items"
-    >
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.team"
-      v-model:search="teamFiltersSearch"
-      label="Team"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      multiple
-      :rules="[
-        (v) => ('length' in v && v.length > 0) || 'This field is required',
-      ]"
-      :options="usersStore.items"
-      :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
-    >
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.status"
-      label="Status"
-      :rules="[required]"
-      track-by="value"
-      value-by="value"
-      :options="[
-        { text: 'In progress', value: 'in progress' },
-        { text: 'Archived', value: 'archived' },
-        { text: 'Completed', value: 'completed' },
-        { text: 'Important', value: 'important' },
-      ]"
-    >
-      <template #content="{ value }">
-        <ProjectStatusBadge v-if="value" :status="value.value" />
-      </template>
-    </VaSelect>
+    
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
-        >Cancel</VaButton
+        >Cancelar</VaButton
       >
-      <VaButton @click="validate() && $emit('save', newProject)">{{
-        saveButtonLabel
-      }}</VaButton>
+      <VaButton @click="validate() && $emit('save', newProject)">Guardar</VaButton>
     </div>
   </VaForm>
 </template>
