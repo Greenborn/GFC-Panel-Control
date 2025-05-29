@@ -6,7 +6,7 @@ import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
 
 const toEdit = ref(null);
-const doShowFotoclubFormModal = ref(false);
+const doShowFormModal = ref(false);
 
 const metrics = ref([])
 const isLoading = ref(false)
@@ -22,6 +22,11 @@ onMounted(async () => {
 function createNew(){
   alert("En desarrollo")
 }
+
+function showEditModal(data) {
+  toEdit.value = data
+  doShowFormModal.value = true
+}
 </script>
 
 <template>
@@ -30,13 +35,13 @@ function createNew(){
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNew">Métrica</VaButton>
+        <!--<VaButton icon="add" @click="createNew">Métrica</VaButton>-->
       </div>
 
       <MetricTable
         :metrics="metrics"
         :loading="isLoading"
-        @edit="editProject"
+        @edit="showEditModal"
         @delete="onProjectDeleted"
       />
     </VaCardContent>
@@ -51,12 +56,11 @@ function createNew(){
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="toEdit === null" class="va-h5 mb-4">Add project</h1>
-      <h1 v-else class="va-h5 mb-4">Edit project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Agregar Métrica</h1>
+      <h1 v-else class="va-h5 mb-4">Editar Métrica - {{ toEdit.prize }}</h1>
       <EditMetricForm
         ref="editFormRef"
-        :project="toEdit"
-        :save-button-label="toEdit === null ? 'Add' : 'Save'"
+        :metric="toEdit"
         @close="cancel"
         @save="
           (project) => {
