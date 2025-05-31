@@ -27,6 +27,43 @@ function showEditModal(data) {
   toEdit.value = data
   doShowFormModal.value = true
 }
+
+function onProjectSaved(project) {
+  axios.put(import.meta.env.VITE_API_URL + 'metric/edit', project)
+    .then(response => {
+      if (response.data.stat === true) {
+        alert(response.data.text);
+        doShowFormModal.value = false;
+        reloadMetrics();
+      } else {
+        alert(response.data.text);
+      }
+    })
+    .catch(error => {
+      if (error.response.status === 401) {
+        alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+      } else if (error.response.status === 500) {
+        alert('Error interno del servidor. Por favor, inténtelo nuevamente más tarde.');
+      } else {
+        alert('Error desconocido. Por favor, inténtelo nuevamente más tarde.');
+      }
+    });
+}
+
+function reloadMetrics() {
+  isLoading.value = true;
+  axios.get(import.meta.env.VITE_API_URL + 'metric/get_all')
+    .then(response => {
+      metrics.value = response.data.items;
+      isLoading.value = false;
+    })
+    .catch(error => {
+      console.error(error);
+      isLoading.value = false;
+    });
+}
+
+
 </script>
 
 <template>
