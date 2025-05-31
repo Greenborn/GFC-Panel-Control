@@ -84,7 +84,9 @@ const submit = () => {
       // datos de login
       username: formData.value.email,
       password: formData.value.password
-    })
+    }, {
+    withCredentials: true
+  })
     .then((response) => {
       if (response.data.r === true) {
         localStorage.setItem('token', response.data.t);

@@ -28,12 +28,14 @@ function showEditModal(data) {
   doShowFormModal.value = true
 }
 
-function onProjectSaved(metric) {
+function onSaved(metric) {
   const editedMetric = { ...metric }
   if (editedMetric.organization_type?.value)
     editedMetric.organization_type = editedMetric.organization_type.value;
   
-  axios.put(import.meta.env.VITE_API_URL + 'metric/edit', editedMetric)
+  axios.put(import.meta.env.VITE_API_URL + 'metric/edit', editedMetric, {
+    withCredentials: true
+  })
     .then(response => {
       if (response.data.stat === true) {
         alert(response.data.text);
@@ -105,7 +107,7 @@ function reloadMetrics() {
         @close="cancel"
         @save="
           (metric) => {
-            onProjectSaved(metric);
+            onSaved(metric);
             ok();
           }
         "
