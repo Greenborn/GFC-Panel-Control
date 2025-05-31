@@ -1,15 +1,7 @@
-<script setup lang="ts">
-import { PropType } from "vue";
-import { Project } from "../types";
+<script setup>
+defineProps(["status"]);
 
-defineProps({
-  status: {
-    type: String as PropType<Project["status"]>,
-    required: true,
-  },
-});
-
-const badgeColorMap: Record<Project["status"], string> = {
+const badgeColorMap = {
   "in progress": "primary",
   archived: "secondary",
   completed: "success",

@@ -5,8 +5,8 @@ import axios from 'axios'
 import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
 
-const projectToEdit = ref(null);
-const doShowFotoclubFormModal = ref(false);
+const toEdit = ref(null);
+const doShowFormModal = ref(false);
 
 const metrics = ref([])
 const isLoading = ref(false)
@@ -22,6 +22,54 @@ onMounted(async () => {
 function createNew(){
   alert("En desarrollo")
 }
+
+function showEditModal(data) {
+  toEdit.value = data
+  doShowFormModal.value = true
+}
+
+function onSaved(metric) {
+  const editedMetric = { ...metric }
+  if (editedMetric.organization_type?.value)
+    editedMetric.organization_type = editedMetric.organization_type.value;
+  
+  axios.put(import.meta.env.VITE_API_URL + 'metric/edit', editedMetric, {
+    withCredentials: true
+  })
+    .then(response => {
+      if (response.data.stat === true) {
+        alert(response.data.text);
+        doShowFormModal.value = false;
+        reloadMetrics();
+      } else {
+        alert(response.data.text);
+      }
+    })
+    .catch(error => {
+      if (error.response.status === 401) {
+        alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+      } else if (error.response.status === 500) {
+        alert('Error interno del servidor. Por favor, inténtelo nuevamente más tarde.');
+      } else {
+        alert('Error desconocido. Por favor, inténtelo nuevamente más tarde.');
+      }
+    });
+}
+
+function reloadMetrics() {
+  isLoading.value = true;
+  axios.get(import.meta.env.VITE_API_URL + 'metric/get_all')
+    .then(response => {
+      metrics.value = response.data.items;
+      isLoading.value = false;
+    })
+    .catch(error => {
+      console.error(error);
+      isLoading.value = false;
+    });
+}
+
+
 </script>
 
 <template>
@@ -30,20 +78,20 @@ function createNew(){
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNew">Métrica</VaButton>
+        <!--<VaButton icon="add" @click="createNew">Métrica</VaButton>-->
       </div>
 
       <MetricTable
         :metrics="metrics"
         :loading="isLoading"
-        @edit="editProject"
+        @edit="showEditModal"
         @delete="onProjectDeleted"
       />
     </VaCardContent>
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowProjectFormModal"
+      v-model="doShowFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -51,16 +99,15 @@ function createNew(){
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
-      <h1 v-else class="va-h5 mb-4">Edit project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Agregar Métrica</h1>
+      <h1 v-else class="va-h5 mb-4">Editar Métrica - {{ toEdit.prize }}</h1>
       <EditMetricForm
         ref="editFormRef"
-        :project="projectToEdit"
-        :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
+        :metric="toEdit"
         @close="cancel"
         @save="
-          (project) => {
-            onProjectSaved(project);
+          (metric) => {
+            onSaved(metric);
             ok();
           }
         "

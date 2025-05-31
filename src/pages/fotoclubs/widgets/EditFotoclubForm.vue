@@ -1,115 +1,27 @@
 <script setup>
-import { computed, ref, watch } from "vue";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
-import UserAvatar from "../../users/widgets/UserAvatar.vue";
+import { ref } from "vue";
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
-const props = defineProps([
-  "project",
-  "saveButtonLabel"]);
+import { DEFAULT_FC } from "../const.js";
 
+const props = defineProps(["fotoclub"])
 
-const defaultNewProject = {
-  project_name: "",
-  project_owner: undefined,
-  team: [],
-  status: undefined,
-};
-
-const newProject = ref({ ...defaultNewProject });
-
-const isFormHasUnsavedChanges = computed(() => {
-  return Object.keys(newProject.value).some((key) => {
-    if (key === "team") {
-      return false;
-    }
-
-    return (
-      newProject.value[key] !==
-      (props.project ?? defaultNewProject)?.[key]
-    );
-  });
-});
-
-defineExpose({
-  isFormHasUnsavedChanges,
-});
-
-
-watch(
-  () => props.project,
-  () => {
-    if (!props.project) {
-      return;
-    }
-
-    newProject.value = {
-      ...props.project,
-      project_owner: props.project.project_owner,
-    };
-  },
-  { immediate: true },
-);
+const newFotoclub = ref({ ...DEFAULT_FC });
 
 const required = (v) => !!v || "This field is required";
 
-const ownerFiltersSearch = ref("");
-const teamFiltersSearch = ref("");
 </script>
 
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     <VaInput
-      v-model="newProject.project_name"
+      v-model="newFotoclub.project_name"
       label="Project name"
       :rules="[required]"
     />
+    
     <VaSelect
-      v-model="newProject.project_owner"
-      v-model:search="ownerFiltersSearch"
-      searchable
-      label="Owner"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      :rules="[required]"
-      :options="usersStore.items"
-    >
-      <template #content="{ value: user }">
-        <div v-if="user" :key="user.id" class="flex items-center gap-1 mr-4">
-          <UserAvatar v-if="false" :user="user" size="18px" />
-          {{ user.fullname }}
-        </div>
-      </template>
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.team"
-      v-model:search="teamFiltersSearch"
-      label="Team"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      multiple
-      :rules="[
-        (v) => ('length' in v && v.length > 0) || 'This field is required',
-      ]"
-      :options="usersStore.items"
-      :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
-    >
-      <template #content="{ valueArray }">
-        <template v-if="valueArray?.length">
-          <div
-            v-for="(user, index) in valueArray"
-            :key="user.id"
-            class="flex items-center gap-1 mr-2"
-          >
-            <UserAvatar v-if="user" :user="user" size="18px" />
-            {{ user.fullname }}{{ index < valueArray.length - 1 ? "," : "" }}
-          </div>
-        </template>
-      </template>
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.status"
+      v-model="newFotoclub.status"
       label="Status"
       :rules="[required]"
       track-by="value"
@@ -129,9 +41,7 @@ const teamFiltersSearch = ref("");
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
         >Cancel</VaButton
       >
-      <VaButton @click="validate() && $emit('save', newProject)">{{
-        saveButtonLabel
-      }}</VaButton>
+      <VaButton @click="validate() && $emit('save', newFotoclub)">Guardar</VaButton>
     </div>
   </VaForm>
 </template>
