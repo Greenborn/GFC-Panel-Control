@@ -5,7 +5,6 @@
       :key="index"
       v-model="newMetric[field.key]"
       :label="field.label"
-      :rules="[required]"
       :type="field.key === 'score' ? 'number' : 'text'"
     />
     <VaSelect
@@ -16,7 +15,7 @@
         { value: 'EXTERNO', text: 'Externo' },
         { value: 'EXTERNO_UNICEN', text: 'Externo Unicen' }
       ]"
-      :rules="[required]"
+      :return-object="false"
     />
     
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
@@ -39,8 +38,6 @@ const emit = defineEmits(["close", "save"])
 const newMetric = ref(
   props?.metric ? props?.metric : { ...DEFAULT_METRIC, organization_type: 'INTERNO' }
 )
-
-const required = (v) => !!v || "This field is required"
 </script>
 
 <style lang="scss" scoped>
