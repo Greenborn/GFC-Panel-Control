@@ -1,10 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from 'axios'
+import { ref, onMounted } from "vue"
 
 import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
-import { get_all, edit } from "../../api/metrics";
+import { get_all, edit } from "../../api/metrics"
 
 const toEdit = ref(null);
 const doShowFormModal = ref(false);
