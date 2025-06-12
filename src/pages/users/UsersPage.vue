@@ -2,8 +2,8 @@
 import { ref, onMounted } from "vue";
 import UsersTable from "./widgets/UsersTable.vue";
 import EditUserForm from "./widgets/EditUserForm.vue";
-import { useModal, useToast } from "vuestic-ui";
-import axios from 'axios';
+
+import { get_all } from "../../api/users"
 
 import { get_dictionary_from_array } from "../../helpers/utils";
 
@@ -24,14 +24,14 @@ function showAddUserModal() {
 const users = ref([]);
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'users/get_all')
+  let response = await get_all()
   if (response){
     let aux = []
-    let diccio_profile  = get_dictionary_from_array(response.data.profile, 'id', 'object')
-    let fotoclub_diccio = get_dictionary_from_array(response.data.fotoclub, 'id', 'object')
-    let diccio_roles = get_dictionary_from_array(response.data.role, 'id', 'object')
-    for (let i=0; i<response.data.items.length; i++){
-      const USER     = response.data.items[i]
+    let diccio_profile  = get_dictionary_from_array(response.profile, 'id', 'object')
+    let fotoclub_diccio = get_dictionary_from_array(response.fotoclub, 'id', 'object')
+    let diccio_roles = get_dictionary_from_array(response.role, 'id', 'object')
+    for (let i=0; i<response.items.length; i++){
+      const USER     = response.items[i]
       const PROFILE  = diccio_profile[ USER.profile_id ]
       const FOTOCLUB = fotoclub_diccio[ PROFILE.fotoclub_id ]
       const ROL      = diccio_roles[ USER.role_id ]
