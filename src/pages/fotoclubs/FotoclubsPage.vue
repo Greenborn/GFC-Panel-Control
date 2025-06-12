@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from 'axios'
+import { ref, onMounted } from "vue"
 
 import FotoclubTable from "./widgets/FotoclubsTable.vue";
 import EditFotoclubForm from "./widgets/EditFotoclubForm.vue";
+
+import { get_all } from "../../api/fotoclubs"
 
 const toEdit = ref(null);
 const doShowFormModal = ref(false);
@@ -11,10 +12,9 @@ const doShowFormModal = ref(false);
 const fotoclubs = ref([])
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'fotoclub/get_all')
+  let response = await get_all()
   if (response){
-    fotoclubs.value = response.data.items
-    console.log(fotoclubs.value)
+    fotoclubs.value = response.items
   }
 })
 
