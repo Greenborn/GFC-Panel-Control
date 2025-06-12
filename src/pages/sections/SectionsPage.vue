@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from 'axios'
+
+import { get_all } from "../../api/sections"
 
 import SectionsTable from "./widgets/SectionsTable.vue";
 import EditSectionForm from "./widgets/EditSectionForm.vue";
@@ -12,10 +13,9 @@ const isLoading       = ref(false)
 const sections = ref([])
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'section/get_all')
+  let response = await get_all()
   if (response){
-    sections.value = response.data.items
-    console.log(sections.value)
+    sections.value = response.items
   }
 })
 

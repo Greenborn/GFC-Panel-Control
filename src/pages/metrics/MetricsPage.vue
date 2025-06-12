@@ -1,9 +1,9 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from 'axios'
+import { ref, onMounted } from "vue"
 
 import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
+import { get_all, edit } from "../../api/metrics"
 
 const toEdit = ref(null);
 const doShowFormModal = ref(false);
@@ -12,10 +12,9 @@ const metrics = ref([])
 const isLoading = ref(false)
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'metric/get_all')
+  let response = await get_all()
   if (response){
-    metrics.value = response.data.items
-    console.log(metrics.value)
+    metrics.value = response.items
   }
 })
 
@@ -28,45 +27,27 @@ function showEditModal(data) {
   doShowFormModal.value = true
 }
 
-function onSaved(metric) {
+async function onSaved(metric) {
   const editedMetric = { ...metric }
   if (editedMetric.organization_type?.value)
     editedMetric.organization_type = editedMetric.organization_type.value;
   
-  axios.put(import.meta.env.VITE_API_URL + 'metric/edit', editedMetric, {
-    withCredentials: true
-  })
-    .then(response => {
-      if (response.data.stat === true) {
-        alert(response.data.text);
-        doShowFormModal.value = false;
-        reloadMetrics();
-      } else {
-        alert(response.data.text);
-      }
-    })
-    .catch(error => {
-      if (error.response.status === 401) {
-        alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
-      } else if (error.response.status === 500) {
-        alert('Error interno del servidor. Por favor, inténtelo nuevamente más tarde.');
-      } else {
-        alert('Error desconocido. Por favor, inténtelo nuevamente más tarde.');
-      }
-    });
+    let res = await edit(editedMetric)
+    if (res){
+      alert(res.text);
+      doShowFormModal.value = false;
+      await reloadMetrics();
+    }
 }
 
-function reloadMetrics() {
+async function reloadMetrics() {
   isLoading.value = true;
-  axios.get(import.meta.env.VITE_API_URL + 'metric/get_all')
-    .then(response => {
-      metrics.value = response.data.items;
-      isLoading.value = false;
-    })
-    .catch(error => {
-      console.error(error);
-      isLoading.value = false;
-    });
+
+  let response = await get_all()
+  if (response){
+    isLoading.value = false;
+    metrics.value = response.items
+  }
 }
 
 

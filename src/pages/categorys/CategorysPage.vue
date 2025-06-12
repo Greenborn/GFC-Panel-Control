@@ -5,6 +5,8 @@ import axios from 'axios'
 import CategorysTable from "./widgets/CategorysTable.vue";
 import EditCategoryForm from "./widgets/EditCategoryForm.vue";
 
+import { get_all } from "../../api/category"
+
 const toEdit          = ref(null);
 const doShowFormModal = ref(false);
 
@@ -12,9 +14,9 @@ const isLoading = ref(false)
 const categories = ref([])
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'category/get_all')
+  let response = await get_all()
   if (response){
-    categories.value = response.data.items
+    categories.value = response.items
     for (let i=0; i<categories.value.length; i++){
       const ITEM = categories.value[i]
       ITEM.mostrar_en_ranking = ITEM.mostrar_en_ranking ? 'Si' : 'No'
