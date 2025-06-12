@@ -4,7 +4,7 @@ import ContestsTable from "./widgets/ContestsTable.vue";
 import EditConstestForm from "./widgets/EditConstestForm.vue";
 import { fechaDateToString } from "../../helpers/utils";
 
-import axios from 'axios'
+import { get_all } from "../../api/contest"
 
 const contestToEdit = ref(null);
 const doShowFormModal = ref(false);
@@ -12,9 +12,9 @@ const doShowFormModal = ref(false);
 const contests = ref([])
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'contests/get_all')
+  let response = await get_all()
   if (response){
-    contests.value = response.data.items
+    contests.value = response.items
     for (let i=0; i<contests.value.length; i++){
       const ITEM = contests.value[i]
       ITEM.start_date = fechaDateToString(new Date(ITEM.start_date), '-')
