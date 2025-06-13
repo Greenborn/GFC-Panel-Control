@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 
-import { get_all } from "../../api/sections"
+import { get_all, edit } from "../../api/sections"
 
 import SectionsTable from "./widgets/SectionsTable.vue";
 import EditSectionForm from "./widgets/EditSectionForm.vue";
@@ -13,11 +13,15 @@ const isLoading       = ref(false)
 const sections = ref([])
 
 onMounted(async () => {
+  await reload()
+})
+
+async function reload() {
   let response = await get_all()
   if (response){
     sections.value = response.items
   }
-})
+}
 
 function showEditModal(data) {
   toEdit.value = data
@@ -26,6 +30,16 @@ function showEditModal(data) {
 
 function crearNueva(){
   alert("En desarrollo")
+}
+
+async function onSaved(data) {
+  
+    let res = await edit(data)
+    if (res){
+      alert(res.text);
+      doShowFormModal.value = false;
+      await reload()
+    }
 }
 </script>
 
@@ -60,11 +74,11 @@ function crearNueva(){
       <h1 v-else class="va-h5 mb-4">Editar Sección</h1>
       <EditSectionForm
         ref="editFormRef"
-        :seccion="showEditModal"
+        :seccion="toEdit"
         @close="cancel"
         @save="
-          (project) => {
-            onProjectSaved(project);
+          (section) => {
+            onSaved(section);
             ok();
           }
         "
