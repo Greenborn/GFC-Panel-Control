@@ -1,6 +1,4 @@
 <script setup>
-import { Project } from "../types";
-
 defineProps(['status']);
 
 const badgeColorMap = {
