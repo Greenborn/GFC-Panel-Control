@@ -39,7 +39,7 @@ const { confirm } = useModal();
 
     <template #cell(actions)="{ rowData }">
       <div class="flex gap-2 justify-end">
-        <VaButton
+        <!--<VaButton
           preset="primary"
           size="small"
           icon="mso-edit"
@@ -53,7 +53,7 @@ const { confirm } = useModal();
           color="danger"
           aria-label="Delete user"
           @click="en_desarrollo"
-        />
+        />-->
       </div>
     </template>
   </VaDataTable>
