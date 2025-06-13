@@ -47,7 +47,7 @@ const emit  = defineEmits(['edit'])
 
       <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             color="primary"
@@ -62,7 +62,7 @@ const emit  = defineEmits(['edit'])
             color="danger"
             aria-label="Delete contest"
             @click="$emit('delete', contest)"
-          />
+          />-->
         </div>
       </template>
     </VaDataTable>
