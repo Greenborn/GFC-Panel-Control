@@ -6,7 +6,7 @@ import { DEFAULT_SECTION } from "../const.js";
 
 const props = defineProps(["seccion"]);
 
-const newProject = ref({ ...DEFAULT_SECTION });
+const model = ref({ ...props?.seccion ? props.seccion : DEFAULT_SECTION });
 
 const required = (v) => !!v || "This field is required";
 
@@ -15,11 +15,17 @@ const required = (v) => !!v || "This field is required";
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     
+    <VaInput
+      v-model="model.name"
+      label="Sección"
+      :rules="[required]"
+    />
+
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
         >Cancelar</VaButton
       >
-      <VaButton @click="validate() && $emit('save', newProject)">Guardar</VaButton>
+      <VaButton @click="validate() && $emit('save', model)">Guardar</VaButton>
     </div>
   </VaForm>
 </template>

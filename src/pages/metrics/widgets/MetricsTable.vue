@@ -2,15 +2,12 @@
 import { defineVaDataTableColumns } from "vuestic-ui";
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
 
-const columns = defineVaDataTableColumns([
-  { label: "Premio", key: "prize", sortable: true },
-  { label: "Puntage", key: "score", sortable: true },
-  { label: "Tipo Concurso", key: "organization_type", sortable: true },
-  { label: " ", key: "actions" },
-]);
+import { FIELDS_METRIC } from "../const.js";
+
+const columns = defineVaDataTableColumns(FIELDS_METRIC)
 
 const props = defineProps(["metrics", "loading"]);
-
+const emit  = defineEmits(['edit', 'delete'])
 </script>
 
 <template>
@@ -21,7 +18,7 @@ const props = defineProps(["metrics", "loading"]);
       :loading="loading"
     >
 
-      <template #cell(actions)="{ rowData: project }">
+      <template #cell(actions)="{ rowData }">
         <div class="flex gap-2 justify-end">
           <VaButton
             preset="primary"
@@ -29,16 +26,16 @@ const props = defineProps(["metrics", "loading"]);
             color="primary"
             icon="mso-edit"
             aria-label="Edit project"
-            @click="$emit('edit', project)"
+            @click="$emit('edit', rowData)"
           />
-          <VaButton
+          <!--<VaButton
             preset="primary"
             size="small"
             icon="mso-delete"
             color="danger"
             aria-label="Delete project"
-            @click="$emit('delete', project)"
-          />
+            @click="$emit('delete', rowData)"
+          />-->
         </div>
       </template>
     </VaDataTable>
