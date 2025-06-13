@@ -29,7 +29,7 @@
           class="h-full flex flex-row items-center justify-start mx-auto max-w-[420px]"
         >
           <div class="flex flex-col items-start">
-            <RouterLink class="py-4" to="/" aria-label="Visit homepage">
+            <RouterLink class="py-4" to="#" aria-label="Visit homepage">
               <VuesticLogo class="mb-2" start="#0E41C9" />
             </RouterLink>
             <RouterView />
