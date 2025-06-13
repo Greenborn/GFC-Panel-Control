@@ -55,7 +55,7 @@ function showEditModal(data) {
       <h1 v-else class="va-h5 mb-4">Editar Fotoclub - {{ toEdit.name }}</h1>
       <EditFotoclubForm
         ref="editFormRef"
-        :project="toEdit"
+        :fotoclub="toEdit"
         @close="cancel"
         @save="
           (project) => {
