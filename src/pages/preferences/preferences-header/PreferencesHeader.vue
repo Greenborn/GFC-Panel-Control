@@ -1,6 +1,6 @@
 <template>
   <VaAvatar size="large" color="warning"
-    ><span class="text-4xl"> 😍 </span></VaAvatar
+    ><span class="text-4xl"> <img class="rounded-full" :src="get_img_profile()" /> </span></VaAvatar
   >
   <div class="flex flex-col justify-center">
     <h2 class="text-[28px] md:text-[32px] leading-10 font-bold">
@@ -12,6 +12,7 @@
     </div>
   </div>
 </template>
-<script setup>
 
+<script setup>
+import { get_img_profile } from '../../../api/auth'
 </script>
