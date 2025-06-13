@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue"
 import FotoclubTable from "./widgets/FotoclubsTable.vue";
 import EditFotoclubForm from "./widgets/EditFotoclubForm.vue";
 
-import { get_all } from "../../api/fotoclubs"
+import { get_all, edit } from "../../api/fotoclubs"
 
 const toEdit = ref(null);
 const doShowFormModal = ref(false);
@@ -12,15 +12,29 @@ const doShowFormModal = ref(false);
 const fotoclubs = ref([])
 
 onMounted(async () => {
+  await reload()
+})
+
+async function reload() {
   let response = await get_all()
   if (response){
     fotoclubs.value = response.items
   }
-})
+}
 
 function showEditModal(data) {
   toEdit.value = data
   doShowFormModal.value = true
+}
+
+async function onSaved(fotoclub) {
+  
+    let res = await edit(fotoclub)
+    if (res){
+      alert(res.text);
+      doShowFormModal.value = false;
+      await reload()
+    }
 }
 </script>
 
@@ -55,11 +69,11 @@ function showEditModal(data) {
       <h1 v-else class="va-h5 mb-4">Editar Fotoclub - {{ toEdit.name }}</h1>
       <EditFotoclubForm
         ref="editFormRef"
-        :project="toEdit"
+        :fotoclub="toEdit"
         @close="cancel"
         @save="
-          (project) => {
-            onFotoclubSaved(project);
+          async (fotoclub) => {
+            await onSaved(fotoclub);
             ok();
           }
         "

@@ -6,7 +6,7 @@ import { DEFAULT_FC } from "../const.js";
 
 const props = defineProps(["fotoclub"])
 
-const newFotoclub = ref({ ...DEFAULT_FC });
+const newFotoclub = ref({... (props?.fotoclub) ? props.fotoclub : DEFAULT_FC });
 
 const required = (v) => !!v || "This field is required";
 
@@ -15,28 +15,31 @@ const required = (v) => !!v || "This field is required";
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     <VaInput
-      v-model="newFotoclub.project_name"
-      label="Project name"
+      v-model="newFotoclub.name"
+      label="Nombre"
       :rules="[required]"
     />
+
+    <VaInput
+      v-model="newFotoclub.description"
+      label="Descripción"
+    />
+
+    <VaInput
+      v-model="newFotoclub.facebook"
+      label="Facebook"
+    />
+
+    <VaInput
+      v-model="newFotoclub.instagram"
+      label="Instagram"
+    />
+
+    <VaInput
+      v-model="newFotoclub.email"
+      label="E-Mail"
+    />
     
-    <VaSelect
-      v-model="newFotoclub.status"
-      label="Status"
-      :rules="[required]"
-      track-by="value"
-      value-by="value"
-      :options="[
-        { text: 'In progress', value: 'in progress' },
-        { text: 'Archived', value: 'archived' },
-        { text: 'Completed', value: 'completed' },
-        { text: 'Important', value: 'important' },
-      ]"
-    >
-      <template #content="{ value }">
-        <ProjectStatusBadge v-if="value" :status="value.value" />
-      </template>
-    </VaSelect>
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
         >Cancel</VaButton
