@@ -5,7 +5,7 @@
     <p class="font-bold w-[200px]">Name</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ store.userName }}
+        {{ userName }}
       </div>
     </div>
     <VaButton
@@ -24,7 +24,7 @@
     <p class="font-bold w-[200px]">Email</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ store.email }}
+        {{ email }}
       </div>
     </div>
   </div>
@@ -51,17 +51,17 @@
     <p class="font-bold w-[200px]">Two-factor authentication</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ twoFA.content }}
+        {{ content }}
       </div>
     </div>
     <VaButton
       :style="buttonStyles"
       class="w-fit h-fit"
       preset="primary"
-      :color="twoFA.color"
+      :color="color"
       @click="toggle2FA"
     >
-      {{ twoFA.button }}
+      {{ button }}
     </VaButton>
   </div>
   <VaDivider />
@@ -83,43 +83,20 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup>
+<script setup>
 import { computed } from "vue";
 
 import { useToast } from "vuestic-ui";
 
-import { useUserStore } from "../../../stores/user-store";
 
 import { buttonStyles } from "../styles";
 
-const store = useUserStore();
 
 const { init } = useToast();
 
-const toastMessage = computed(() =>
-  store.is2FAEnabled ? "2FA successfully enabled" : "2FA successfully disabled",
-);
-
-const twoFA = computed(() => {
-  if (store.is2FAEnabled) {
-    return {
-      color: "danger",
-      button: "Disable 2FA",
-      content:
-        "Two-Factor Authentication (2FA) is now enabled for your account, adding an extra layer of security to your sign-ins.",
-    };
-  } else {
-    return {
-      color: "primary",
-      button: "Set up 2FA",
-      content:
-        "Add an extra layer of security to your account. To sign in, you’ll need to provide a code along with your username and password.",
-    };
-  }
-});
+const toastMessage = computed(() =>{});
 
 const toggle2FA = () => {
-  store.toggle2FA();
   init({ message: toastMessage.value, color: "success" });
 };
 
