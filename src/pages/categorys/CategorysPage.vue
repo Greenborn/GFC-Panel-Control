@@ -5,7 +5,7 @@ import axios from 'axios'
 import CategorysTable from "./widgets/CategorysTable.vue";
 import EditCategoryForm from "./widgets/EditCategoryForm.vue";
 
-import { get_all } from "../../api/category"
+import { get_all, edit } from "../../api/category"
 
 const toEdit          = ref(null);
 const doShowFormModal = ref(false);
@@ -14,6 +14,10 @@ const isLoading = ref(false)
 const categories = ref([])
 
 onMounted(async () => {
+  await reload()
+})
+
+async function reload() {
   let response = await get_all()
   if (response){
     categories.value = response.items
@@ -22,7 +26,16 @@ onMounted(async () => {
       ITEM.mostrar_en_ranking = ITEM.mostrar_en_ranking ? 'Si' : 'No'
     }
   }
-})
+}
+async function onSaved(data) {
+  
+    let res = await edit(data)
+    if (res){
+      alert(res.text);
+      doShowFormModal.value = false;
+      await reload()
+    }
+}
 
 function createNew() {
   alert("En desarrollo")
@@ -69,8 +82,8 @@ function showEditModal(data) {
         :category="toEdit"
         @close="cancel"
         @save="
-          (project) => {
-            onProjectSaved(project);
+          async (data) => {
+            await onSaved(data);
             ok();
           }
         "
