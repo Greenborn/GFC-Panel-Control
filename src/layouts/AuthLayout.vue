@@ -10,7 +10,7 @@
         to="/"
         aria-label="Visit homepage"
       >
-        <VuesticLogo :height="28" start="#FFF" />
+        <VuesticLogo :height="10" color="0" />
       </RouterLink>
     </template>
     <template #content>
