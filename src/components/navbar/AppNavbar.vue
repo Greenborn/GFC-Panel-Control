@@ -12,7 +12,7 @@
           />
         </Transition>
         <RouterLink to="/" aria-label="Visit home page">
-          <VuesticLogo />
+          <h1><b>Grupo Fotográfico Centro</b></h1>
         </RouterLink>
       </div>
     </template>
