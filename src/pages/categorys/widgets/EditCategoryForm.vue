@@ -2,16 +2,10 @@
 import { ref } from "vue"
 import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
+import { DEFAULT_CATEGORY } from "../const.js";
 const props = defineProps(['category']);
 
-const defaultNewProject = {
-  project_name: "",
-  project_owner: undefined,
-  team: [],
-  status: undefined,
-};
-
-const newCategory = ref({ ...defaultNewProject });
+const newCategory = ref({ ... (props?.category) ? props.category : DEFAULT_CATEGORY });
 
 const required = (v) => !!v || "This field is required";
 
@@ -20,28 +14,20 @@ const required = (v) => !!v || "This field is required";
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     <VaInput
-      v-model="newCategory.project_name"
-      label="Project name"
+      v-model="newCategory.name"
+      label="Nombre"
       :rules="[required]"
     />
     
     <VaSelect
-      v-model="newCategory.status"
-      label="Status"
-      :rules="[required]"
-      track-by="value"
-      value-by="value"
+      v-model="newCategory.mostrar_en_ranking"
+      label="Mostrar en Ranking"
       :options="[
-        { text: 'In progress', value: 'in progress' },
-        { text: 'Archived', value: 'archived' },
-        { text: 'Completed', value: 'completed' },
-        { text: 'Important', value: 'important' },
+        { value: 1, text: 'Si' },
+        { value: 0, text: 'No' }
       ]"
-    >
-      <template #content="{ value }">
-        <ProjectStatusBadge v-if="value" :status="value.value" />
-      </template>
-    </VaSelect>
+    />
+
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
         >Cancelar</VaButton>
