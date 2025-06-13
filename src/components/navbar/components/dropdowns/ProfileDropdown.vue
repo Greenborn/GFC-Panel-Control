@@ -46,15 +46,12 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useColors } from "vuestic-ui";
 
+import { get_img_profile } from '../../../../api/auth'
+
 const { colors, setHSLAColor } = useColors();
 const hoverColor = computed(() => setHSLAColor(colors.focus, { a: 0.1 }));
 
 const { t } = useI18n();
-
-function get_img_profile(){
-  let user_data = JSON.parse(localStorage.getItem('user_data'))
-  return import.meta.env.VITE_URL_PUBLIC+user_data?.profile?.img_url
-}
 
 const options = ref([
       {
