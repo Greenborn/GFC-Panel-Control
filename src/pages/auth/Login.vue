@@ -40,11 +40,11 @@
     <div
       class="auth-layout__options flex flex-col sm:flex-row items-start sm:items-center justify-between"
     >
-      <VaCheckbox
+      <!--<VaCheckbox
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
         label="Mantener sesión abierta"
-      />
+      />-->
       <RouterLink
         :to="{ name: 'recover-password' }"
         class="mt-2 sm:mt-0 sm:ml-1 font-semibold text-primary"
@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 
 import axios from 'axios';
 
@@ -68,12 +69,18 @@ import { useRouter } from "vue-router";
 import { useForm, useToast } from "vuestic-ui";
 import { validators } from "../../services/utils";
 
+import { cerrar_session } from '../../api/auth';
+
 const { validate } = useForm("form");
 const { push } = useRouter();
 const { init } = useToast();
 
+onMounted(async () => {
+  await cerrar_session()
+});
+
 const formData = ref({
-  email: "",
+  email: "",  
   password: "",
   keepLoggedIn: false,
 });
@@ -90,6 +97,7 @@ const submit = () => {
     .then((response) => {
       if (response.data.r === true) {
         localStorage.setItem('token', response.data.t);
+        localStorage.setItem('user_data', JSON.stringify(response.data));
         init({ message: "Sesión iniciada", color: "success" });
         push({ name: "dashboard" });
       } else {
