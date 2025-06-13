@@ -10,7 +10,7 @@
         <VaButton preset="secondary" color="textPrimary">
           <span class="profile-dropdown__anchor min-w-max">
             <slot />
-            <VaAvatar :size="32" color="warning"> 😍 </VaAvatar>
+            <VaAvatar :size="32" color="warning"> <img :src="get_img_profile()" /> </VaAvatar>
           </span>
         </VaButton>
       </template>
@@ -41,7 +41,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useColors } from "vuestic-ui";
@@ -51,25 +51,12 @@ const hoverColor = computed(() => setHSLAColor(colors.focus, { a: 0.1 }));
 
 const { t } = useI18n();
 
-type ProfileListItem = {
-  name: string;
-  to?: string;
-  href?: string;
-  icon: string;
-};
+function get_img_profile(){
+  let user_data = JSON.parse(localStorage.getItem('user_data'))
+  return import.meta.env.VITE_URL_PUBLIC+user_data?.profile?.img_url
+}
 
-type ProfileOptions = {
-  name: string;
-  separator: boolean;
-  list: ProfileListItem[];
-};
-
-withDefaults(
-  defineProps<{
-    options?: ProfileOptions[];
-  }>(),
-  {
-    options: () => [
+const options = ref([
       {
         name: "account",
         separator: true,
@@ -92,13 +79,11 @@ withDefaults(
           },
         ],
       },
-    ],
-  },
-);
+    ])
 
 const isShown = ref(false);
 
-const resolveLinkAttribute = (item: ProfileListItem) => {
+const resolveLinkAttribute = (item) => {
   return item.to
     ? { to: { name: item.to } }
     : item.href

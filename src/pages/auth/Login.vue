@@ -90,7 +90,7 @@ const submit = () => {
     .then((response) => {
       if (response.data.r === true) {
         localStorage.setItem('token', response.data.t);
-        localStorage.setItem('user_data', response.data);
+        localStorage.setItem('user_data', JSON.stringify(response.data));
         init({ message: "Sesión iniciada", color: "success" });
         push({ name: "dashboard" });
       } else {
