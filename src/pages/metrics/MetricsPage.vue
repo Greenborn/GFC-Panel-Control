@@ -1,27 +1,56 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from 'axios'
+import { ref, onMounted } from "vue"
 
 import MetricTable from "./widgets/MetricsTable.vue";
 import EditMetricForm from "./widgets/EditMetricForm.vue";
+import { get_all, edit } from "../../api/metrics"
 
-const projectToEdit = ref(null);
-const doShowFotoclubFormModal = ref(false);
+const toEdit = ref(null);
+const doShowFormModal = ref(false);
 
 const metrics = ref([])
 const isLoading = ref(false)
 
 onMounted(async () => {
-  let response = await axios.get(import.meta.env.VITE_API_URL+'metric/get_all')
+  let response = await get_all()
   if (response){
-    metrics.value = response.data.items
-    console.log(metrics.value)
+    metrics.value = response.items
   }
 })
 
 function createNew(){
   alert("En desarrollo")
 }
+
+function showEditModal(data) {
+  toEdit.value = data
+  doShowFormModal.value = true
+}
+
+async function onSaved(metric) {
+  const editedMetric = { ...metric }
+  if (editedMetric.organization_type?.value)
+    editedMetric.organization_type = editedMetric.organization_type.value;
+  
+    let res = await edit(editedMetric)
+    if (res){
+      alert(res.text);
+      doShowFormModal.value = false;
+      await reloadMetrics();
+    }
+}
+
+async function reloadMetrics() {
+  isLoading.value = true;
+
+  let response = await get_all()
+  if (response){
+    isLoading.value = false;
+    metrics.value = response.items
+  }
+}
+
+
 </script>
 
 <template>
@@ -30,20 +59,20 @@ function createNew(){
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <VaButton icon="add" @click="createNew">Métrica</VaButton>
+        <!--<VaButton icon="add" @click="createNew">Métrica</VaButton>-->
       </div>
 
       <MetricTable
         :metrics="metrics"
         :loading="isLoading"
-        @edit="editProject"
+        @edit="showEditModal"
         @delete="onProjectDeleted"
       />
     </VaCardContent>
 
     <VaModal
       v-slot="{ cancel, ok }"
-      v-model="doShowProjectFormModal"
+      v-model="doShowFormModal"
       size="small"
       mobile-fullscreen
       close-button
@@ -51,16 +80,15 @@ function createNew(){
       hide-default-actions
       :before-cancel="beforeEditFormModalClose"
     >
-      <h1 v-if="projectToEdit === null" class="va-h5 mb-4">Add project</h1>
-      <h1 v-else class="va-h5 mb-4">Edit project</h1>
+      <h1 v-if="toEdit === null" class="va-h5 mb-4">Agregar Métrica</h1>
+      <h1 v-else class="va-h5 mb-4">Editar Métrica - {{ toEdit.prize }}</h1>
       <EditMetricForm
         ref="editFormRef"
-        :project="projectToEdit"
-        :save-button-label="projectToEdit === null ? 'Add' : 'Save'"
+        :metric="toEdit"
         @close="cancel"
         @save="
-          (project) => {
-            onProjectSaved(project);
+          (metric) => {
+            onSaved(metric);
             ok();
           }
         "

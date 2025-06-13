@@ -1,119 +1,37 @@
-<script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { SelectOption } from "vuestic-ui";
-import ProjectStatusBadge from "../components/ProjectStatusBadge.vue";
+<script setup>
+import { ref } from "vue"
+import ProjectStatusBadge from "../components/ProjectStatusBadge.vue"
 
-const props = defineProps({});
+import { DEFAULT_CATEGORY } from "../const.js";
+const props = defineProps(['category']);
 
-const defaultNewProject = {
-  project_name: "",
-  project_owner: undefined,
-  team: [],
-  status: undefined,
-};
-
-const newProject = ref({ ...defaultNewProject });
-
-const isFormHasUnsavedChanges = computed(() => {
-  return Object.keys(newProject.value).some((key) => {
-    if (key === "team") {
-      return false;
-    }
-
-    return (
-      newProject.value[key] !==
-      (props.project ?? defaultNewProject)?.[key]
-    );
-  });
-});
-
-defineExpose({
-  isFormHasUnsavedChanges,
-});
-
-
-watch(
-  () => props.project,
-  () => {
-    if (!props.project) {
-      return;
-    }
-
-    newProject.value = {
-      ...props.project,
-      project_owner: props.project.project_owner,
-    };
-  },
-  { immediate: true },
-);
+const newCategory = ref({ ... (props?.category) ? props.category : DEFAULT_CATEGORY });
 
 const required = (v) => !!v || "This field is required";
 
-const ownerFiltersSearch = ref("");
-const teamFiltersSearch = ref("");
 </script>
 
 <template>
   <VaForm v-slot="{ validate }" class="flex flex-col gap-2">
     <VaInput
-      v-model="newProject.project_name"
-      label="Project name"
+      v-model="newCategory.name"
+      label="Nombre"
       :rules="[required]"
     />
+    
     <VaSelect
-      v-model="newProject.project_owner"
-      v-model:search="ownerFiltersSearch"
-      searchable
-      label="Owner"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      :rules="[required]"
-      :options="usersStore.items"
-    >
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.team"
-      v-model:search="teamFiltersSearch"
-      label="Team"
-      text-by="fullname"
-      track-by="id"
-      value-by="id"
-      multiple
-      :rules="[
-        (v: any) => ('length' in v && v.length > 0) || 'This field is required',
-      ]"
-      :options="usersStore.items"
-      :max-visible-options="$vaBreakpoint.mdUp ? 3 : 1"
-    >
-      <template #content="{ valueArray }">
-        
-      </template>
-    </VaSelect>
-    <VaSelect
-      v-model="newProject.status"
-      label="Status"
-      :rules="[required]"
-      track-by="value"
-      value-by="value"
+      v-model="newCategory.mostrar_en_ranking"
+      label="Mostrar en Ranking"
       :options="[
-        { text: 'In progress', value: 'in progress' },
-        { text: 'Archived', value: 'archived' },
-        { text: 'Completed', value: 'completed' },
-        { text: 'Important', value: 'important' },
+        { value: 1, text: 'Si' },
+        { value: 0, text: 'No' }
       ]"
-    >
-      <template #content="{ value }">
-        <ProjectStatusBadge v-if="value" :status="value.value" />
-      </template>
-    </VaSelect>
+    />
+
     <div class="flex justify-end flex-col-reverse sm:flex-row mt-4 gap-2">
       <VaButton preset="secondary" color="secondary" @click="$emit('close')"
-        >Cancel</VaButton
-      >
-      <VaButton @click="validate() && $emit('save', newProject as Project)">{{
-        saveButtonLabel
-      }}</VaButton>
+        >Cancelar</VaButton>
+      <VaButton @click="validate() && $emit('save', newCategory)">Guardar</VaButton>
     </div>
   </VaForm>
 </template>
