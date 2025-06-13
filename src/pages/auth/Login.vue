@@ -40,11 +40,11 @@
     <div
       class="auth-layout__options flex flex-col sm:flex-row items-start sm:items-center justify-between"
     >
-      <VaCheckbox
+      <!--<VaCheckbox
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
         label="Mantener sesión abierta"
-      />
+      />-->
       <RouterLink
         :to="{ name: 'recover-password' }"
         class="mt-2 sm:mt-0 sm:ml-1 font-semibold text-primary"
