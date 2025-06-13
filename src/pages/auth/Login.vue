@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 
 import axios from 'axios';
 
@@ -68,12 +69,18 @@ import { useRouter } from "vue-router";
 import { useForm, useToast } from "vuestic-ui";
 import { validators } from "../../services/utils";
 
+import { cerrar_session } from '../../api/auth';
+
 const { validate } = useForm("form");
 const { push } = useRouter();
 const { init } = useToast();
 
+onMounted(async () => {
+  await cerrar_session()
+});
+
 const formData = ref({
-  email: "",
+  email: "",  
   password: "",
   keepLoggedIn: false,
 });
