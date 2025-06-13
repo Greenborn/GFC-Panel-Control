@@ -2,6 +2,19 @@
   <RouterView />
 </template>
 
+<script setup>
+import { onMounted } from 'vue';
+
+import { session } from './api/auth'
+
+onMounted(async () => {
+  let response = await session()
+  if (response){
+    localStorage.setItem('user_data', JSON.stringify(response));
+  }
+})
+</script>
+
 <style lang="scss">
 #app {
   font-family: "Inter", Avenir, Helvetica, Arial, sans-serif;
