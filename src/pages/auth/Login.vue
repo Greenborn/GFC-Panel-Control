@@ -1,12 +1,12 @@
 <template>
   <VaForm ref="form" @submit.prevent="submit">
     <h1 class="font-semibold text-4xl mb-4">Ingresar</h1>
-    <p class="text-base mb-4 leading-5">
+    <!--<p class="text-base mb-4 leading-5">
       ¿No tienes una cuenta?
       <RouterLink :to="{ name: 'signup' }" class="font-semibold text-primary"
         >Registrate</RouterLink
       >
-    </p>
+    </p>-->
     <VaInput
       v-model="formData.email"
       :rules="[validators.required]"
@@ -44,13 +44,13 @@
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
         label="Mantener sesión abierta"
-      />-->
+      />
       <RouterLink
         :to="{ name: 'recover-password' }"
         class="mt-2 sm:mt-0 sm:ml-1 font-semibold text-primary"
       >
         Recordar Contraseña
-      </RouterLink>
+      </RouterLink>-->
     </div>
 
     <div class="flex justify-center mt-4">
