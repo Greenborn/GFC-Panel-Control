@@ -73,13 +73,13 @@ export default {
         },
       ],
     },
-    {
+    /*{
       name: "preferences",
       displayName: "menu.preferences",
       meta: {
         icon: "manage_accounts",
       },
-    },
+    },*/
     /*{
       name: "settings",
       displayName: "menu.settings",

@@ -54,7 +54,7 @@ const hoverColor = computed(() => setHSLAColor(colors.focus, { a: 0.1 }));
 const { t } = useI18n();
 
 const options = ref([
-      {
+      /*{
         name: "account",
         separator: true,
         list: [
@@ -64,7 +64,7 @@ const options = ref([
             icon: "mso-account_circle",
           },
         ],
-      },
+      },*/
       {
         name: "",
         separator: false,
