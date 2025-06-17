@@ -1,12 +1,12 @@
 <template>
   <VaForm ref="form" @submit.prevent="submit">
     <h1 class="font-semibold text-4xl mb-4">Ingresar</h1>
-    <p class="text-base mb-4 leading-5">
+    <!--<p class="text-base mb-4 leading-5">
       ¿No tienes una cuenta?
       <RouterLink :to="{ name: 'signup' }" class="font-semibold text-primary"
         >Registrate</RouterLink
       >
-    </p>
+    </p>-->
     <VaInput
       v-model="formData.email"
       :rules="[validators.required]"
@@ -40,7 +40,7 @@
     <div
       class="auth-layout__options flex flex-col sm:flex-row items-start sm:items-center justify-between"
     >
-      <VaCheckbox
+      <!--<VaCheckbox
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
         label="Mantener sesión abierta"
@@ -50,7 +50,7 @@
         class="mt-2 sm:mt-0 sm:ml-1 font-semibold text-primary"
       >
         Recordar Contraseña
-      </RouterLink>
+      </RouterLink>-->
     </div>
 
     <div class="flex justify-center mt-4">
@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 
 import axios from 'axios';
 
@@ -68,12 +69,18 @@ import { useRouter } from "vue-router";
 import { useForm, useToast } from "vuestic-ui";
 import { validators } from "../../services/utils";
 
+import { cerrar_session } from '../../api/auth';
+
 const { validate } = useForm("form");
 const { push } = useRouter();
 const { init } = useToast();
 
+onMounted(async () => {
+  await cerrar_session()
+});
+
 const formData = ref({
-  email: "",
+  email: "",  
   password: "",
   keepLoggedIn: false,
 });
@@ -90,6 +97,7 @@ const submit = () => {
     .then((response) => {
       if (response.data.r === true) {
         localStorage.setItem('token', response.data.t);
+        localStorage.setItem('user_data', JSON.stringify(response.data));
         init({ message: "Sesión iniciada", color: "success" });
         push({ name: "dashboard" });
       } else {
