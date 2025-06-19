@@ -24,6 +24,7 @@
         @clickAppendInner.stop="
           isPasswordVisible.value = !isPasswordVisible.value
         "
+        @keydown.enter="submit"
       >
         <template #appendInner>
           <VaIcon
@@ -37,9 +38,7 @@
       </VaInput>
     </VaValue>
 
-    <div
-      class="auth-layout__options flex flex-col sm:flex-row items-start sm:items-center justify-between"
-    >
+    <div class="auth-layout__options flex flex-col sm:flex-row items-start sm:items-center justify-between">
       <!--<VaCheckbox
         v-model="formData.keepLoggedIn"
         class="mb-2 sm:mb-0"
@@ -54,7 +53,7 @@
     </div>
 
     <div class="flex justify-center mt-4">
-      <VaButton class="w-full" @click="submit"> Iniciar Sesión</VaButton>
+      <VaButton class="w-full" @click="submit">Iniciar Sesión</VaButton>
     </div>
   </VaForm>
 </template>
